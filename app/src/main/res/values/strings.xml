@@ -1,0 +1,114 @@
+<resources>
+    <string name="app_name">TechTrends</string>
+    <string name="terms_and_conditions">I agree to these <b>terms</b> &amp; <b> conditions</b> </string>
+    <string name="tos_content">
+        &lt;h5&gt;
+
+        Privacy Policy
+
+        &lt;/h5&gt;
+        &lt;br/&gt;
+        &lt;p&gt;
+
+        I take your privacy very seriously.
+
+        &lt;/p&gt;
+        &lt;br/&gt;
+        &lt;p&gt;
+        &lt;b&gt;Tech Trends&lt;/b&gt;
+
+        does not collect any user data, and all sensitive information (passwords and other account information) is
+        stored securely in the local application database on your device.
+
+        &lt;/p&gt;
+        &lt;br/&gt;
+        &lt;p&gt;
+        &lt;b&gt;Tech Trends&lt;/b&gt;
+
+        will use the following permissions to provide you with the service.
+
+        &lt;/p&gt;
+        &lt;br/&gt;
+        &lt;p&gt;
+
+        - Access Network permission (to access online content as you specify)
+
+        &lt;/p&gt;
+        &lt;p&gt;
+
+        - Get network status permission (to determine if the device currently has available network conditions)
+
+        &lt;/p&gt;
+        &lt;p&gt;
+
+        - Background service permission (to automatically sync your favorites for you on a regular
+        basis)
+
+        &lt;/p&gt;
+        &lt;br/&gt;
+        &lt;br/&gt;
+        &lt;h5&gt;
+
+        Third Party Services
+
+        &lt;/h5&gt;
+        &lt;br/&gt;
+        &lt;p&gt;
+
+        This policy does not apply to third-party services that you use with &lt;b&gt;Tech Trends &lt;/b&gt;. You can review
+        the privacy policies of the third-party services you use on their websites
+
+        &lt;/p&gt;
+        &lt;br/&gt;
+        &lt;br/&gt;
+        &lt;h5&gt;
+
+        Disclaimers
+
+        &lt;/h5&gt;
+        &lt;br/&gt;
+        &lt;p&gt;
+        &lt;b&gt;Tech Trends&lt;/b&gt;
+
+        is a content collection tool only. Your use of &lt;b&gt;Tech Trends&lt;/b&gt; is subject to the laws and
+        regulations of your country and region, and any liability arising from your actions will be borne by you
+        personally.
+
+        &lt;/p&gt;
+        &lt;br/&gt;
+        &lt;br/&gt;
+        &lt;h5&gt;
+
+        Open Source License
+
+        &lt;/h5&gt;
+        &lt;br/&gt;
+        &lt;p&gt;
+        &lt;b&gt;Tech Trends&lt;/b&gt;
+
+        is an open source project under the GNU GPL 3.0 Open Source License[1], which allows you to use, reference, and
+        modify the source code of &lt;b&gt;Tech Trends&lt;/b&gt; free of charge, but does not allow the
+        modified and derived code to be distributed and sold as closed-source commercial software. For details, please
+        see the full GNU GPL 3.0 Open Source License[2].
+
+        &lt;/p&gt;
+        &lt;br/&gt;
+        &lt;br/&gt;
+        &lt;h5&gt;
+
+        Appendix
+
+        &lt;/h5&gt;
+        &lt;br/&gt;
+        &lt;p&gt;
+
+        - [1] https://github.com/Fa-d/TechTrends
+
+        &lt;/p&gt;
+        &lt;p&gt;
+
+        - [2] https://www.gnu.org/licenses/gpl-3.0.html
+
+        &lt;/p&gt;
+    </string>
+</resources>

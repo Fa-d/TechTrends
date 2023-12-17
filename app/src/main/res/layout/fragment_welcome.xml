@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.WelcomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="80dp"
+            android:fontFamily="@font/roboto_500"
+            android:text="Welcome"
+            android:textSize="36dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lotitefile"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="48dp"
+            android:scaleX="1.6"
+            android:scaleY="1.6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/welcome" />
+
+        <TextView
+            android:id="@+id/termsAndConditionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="58dp"
+            android:fontFamily="@font/roboto_500"
+            android:lineSpacingExtra="6dp"
+            android:text="Terms &amp; Conditions"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="@+id/lotitefile"
+            app:layout_constraintTop_toBottomOf="@+id/lotitefile" />
+
+
+        <TextView
+            android:id="@+id/subtitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="8dp"
+            android:fontFamily="@font/roboto_300"
+            android:lineSpacingExtra="4dp"
+            android:text="A Terms and Conditions agreement acts as a legal contract between you (the company) and the user. It's where you maintain your rights to exclude users from your app in the event that they abuse your website/app, set out the rules for using your service and note other important details and"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/seeMoreText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/termsAndConditionTitle" />
+
+
+        <TextView
+            android:id="@+id/seeMoreText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/roboto_500"
+            android:gravity="start"
+            android:lineSpacingExtra="6dp"
+            android:text="See More"
+            app:layout_constraintBottom_toTopOf="@+id/checkboxTC"
+            app:layout_constraintEnd_toEndOf="@+id/subtitleText"
+            app:layout_constraintStart_toStartOf="@+id/subtitleText"
+            app:layout_constraintTop_toBottomOf="@+id/subtitleText"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <CheckBox
+            android:id="@+id/checkboxTC"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/checkbox_selector"
+            android:button="@null"
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seeMoreText" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/roboto_300"
+            android:lineSpacingExtra="4dp"
+            android:text="@string/terms_and_conditions"
+            app:layout_constraintBottom_toBottomOf="@+id/checkboxTC"
+            app:layout_constraintStart_toEndOf="@+id/checkboxTC"
+            app:layout_constraintTop_toTopOf="@+id/checkboxTC" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:elevation="2dp"
+            android:src="@drawable/next"
+            app:backgroundTint="@color/blue_200"
+            app:circularflow_radiusInDP="100dp"
+
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
