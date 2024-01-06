@@ -1,4 +1,4 @@
-package com.faddy.techtrends.ui
+package com.faddy.techtrends.ui.fragments
 
 import android.os.Bundle
 import android.text.Html
@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.faddy.techtrends.R
 import com.faddy.techtrends.databinding.FragmentWelcomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class WelcomeFragment : Fragment() {
     private lateinit var binding: FragmentWelcomeBinding
     var isSeeMore = false
@@ -37,6 +40,9 @@ class WelcomeFragment : Fragment() {
                 binding.seeMoreText.text = "See More"
             }
             isSeeMore = !isSeeMore
+        }
+        binding.floatingActionButton.setOnClickListener {
+            findNavController().navigate(R.id.chooseTopicFragment)
         }
     }
 }
