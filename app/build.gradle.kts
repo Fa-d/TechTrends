@@ -53,6 +53,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 
 
     // Room
