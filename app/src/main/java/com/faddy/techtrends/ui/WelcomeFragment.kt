@@ -39,5 +39,4 @@ class WelcomeFragment : Fragment() {
             isSeeMore = !isSeeMore
         }
     }
-//http://ec2-18-142-15-245.ap-southeast-1.compute.amazonaws.com/tableQuery
 }

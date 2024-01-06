@@ -15,8 +15,16 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "0.0.1"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments(
+                    mapOf(
+                        Pair("room.schemaLocation", "$projectDir/schemas".toString())
+                    )
+                )
+            }
+        }
     }
 
     buildFeatures {
