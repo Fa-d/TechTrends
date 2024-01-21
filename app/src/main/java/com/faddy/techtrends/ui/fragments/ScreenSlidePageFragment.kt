@@ -12,7 +12,7 @@ import com.faddy.techtrends.ui.adapter.MotherItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ScreenSlidePageFragment : Fragment() {
+class ScreenSlidePageFragment() : Fragment() {
     private lateinit var binding: FragmentScreenSlidePageBinding
     private val motherItemAdapter = MotherItemAdapter()
 

@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.faddy.techtrends.R
+import com.faddy.techtrends.core.MainViewModel
 import com.faddy.techtrends.databinding.FragmentChooseTopicBinding
 import com.faddy.techtrends.ui.adapter.TopicAdapter
 import com.google.android.flexbox.FlexDirection
@@ -18,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChooseTopicFragment : Fragment() {
     private lateinit var binding: FragmentChooseTopicBinding
-
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val topicAdapter = TopicAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -30,7 +32,19 @@ class ChooseTopicFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initData()
+        initObserver()
         initClickListener()
+    }
+
+    private fun initObserver() {
+        mainViewModel.allCategoriesList.observe(viewLifecycleOwner) { dataList ->
+            val tempCat = mutableListOf<String>()
+            dataList.forEach { result ->
+                result.values.forEach { tempCat.add(it) }
+            }
+            //insert the response into mainDatabase
+            topicAdapter.initData(tempCat)
+        }
     }
 
     private fun initClickListener() {
@@ -48,55 +62,10 @@ class ChooseTopicFragment : Fragment() {
             //  layoutManager = StaggeredGridLayoutManager(4, LinearLayoutManager.HORIZONTAL)
             adapter = topicAdapter
         }
-        topicAdapter.initData(
-            listOf(
 
-                "Topidfg;hlc 1",
-                "Topic kj",
-                "Topic lkmlk  laks 1",
-                "Topidfg;hlc 1",
-                "TopicTopic 1",
-                "Topic asd1",
-                "Topic alskmaslkdma1",
-                "Topic TopicTopic1",
-                "TopicTopic 1",
-                "Topic as;lfa'1",
-                "Top",
-                "Tolkamsdlkamsdlkapic 1",
-                "Topic kj",
-                "Topic lkmlk  laks 1",
-                "Topic alskmaslkdma1",
-                "Topic TopicTopic1",
-                "TopicTopic 1",
-                "Topic as;lfa'1",
-                "Top",
-                "Topic kj",
-                "Topic lkmlk  laks 1",
-                "Topidfg;hlc 1",
-                "Topic asd1",
-                "Topic asd1",
-                "Topidfg;hlc 1",
-                "Topic asd1",
-                "Topic alskmaslkdma1",
-                "Topic TopicTopic1",
-                "TopicTopic 1",
-                "Topic asd1",
-                "Topidfg;hlc 1",
-                "Topic asd1",
-                "Topic alskmaslkdma1",
-                "Topic TopicTopic1",
-                "TopicTopic 1",
-                "Topic alskmaslkdma1",
-                "Topic TopicTopic1",
-
-                "Topic alskmaslkdma1",
-                "Topic as;lfa'1",
-                "Top",
-            )
-        )
     }
 
     private fun initView() {
-
+        mainViewModel.getAllCategoriesData()
     }
 }
