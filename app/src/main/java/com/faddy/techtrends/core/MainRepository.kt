@@ -20,6 +20,7 @@ class MainRepository @Inject constructor(
     suspend fun insetCategory(category: List<CategoryModel>) = mainDatabase.CategoryModelDao().insertCategory(category)
     suspend fun getAllCategoriesFromDb() = mainDatabase.CategoryModelDao().getAllServers()
     suspend fun clearAllCategoriesFromDb() = mainDatabase.CategoryModelDao().clearAllServerList()
+    suspend fun setItemSelected(isSelected: Boolean, catKey: String) = mainDatabase.CategoryModelDao().setItemSelected(isSelected, catKey)
 
     suspend fun insetChildArticleCategory(category: List<ChildArticleModel>) = mainDatabase.ChildArticleDao().insertCategory(category)
     suspend fun getAllChildArticleCategoryFromDb() = mainDatabase.ChildArticleDao().getAllServers()

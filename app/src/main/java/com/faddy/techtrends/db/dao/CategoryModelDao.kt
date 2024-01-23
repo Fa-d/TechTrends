@@ -8,7 +8,7 @@ import com.faddy.techtrends.models.newModels.CategoryModel
 
 @Dao
 interface CategoryModelDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCategory(characters: List<CategoryModel>)
 
     @Query("SELECT * FROM category_model")
@@ -16,4 +16,7 @@ interface CategoryModelDao {
 
     @Query("DELETE FROM category_model")
     suspend fun clearAllServerList(): Int
+
+    @Query("UPDATE category_model SET isItemSelected = :isSelected WHERE cat_key = :catKey")
+    suspend fun setItemSelected(isSelected: Boolean, catKey: String): Int
 }

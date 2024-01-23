@@ -1,14 +1,13 @@
-package com.faddy.techtrends.ui.fragments
+package com.faddy.techtrends.ui.fragments.chooseTopic
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.faddy.techtrends.R
-import com.faddy.techtrends.core.MainViewModel
 import com.faddy.techtrends.databinding.FragmentChooseTopicBinding
 import com.faddy.techtrends.ui.adapter.TopicAdapter
 import com.google.android.flexbox.FlexDirection
@@ -20,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChooseTopicFragment : Fragment() {
     private lateinit var binding: FragmentChooseTopicBinding
-    private val mainViewModel: MainViewModel by activityViewModels()
+    private val chooseTopicViewModel: ChooseTopicViewModel by viewModels()
     private val topicAdapter = TopicAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -37,19 +36,19 @@ class ChooseTopicFragment : Fragment() {
     }
 
     private fun initObserver() {
-        mainViewModel.allCategoriesList.observe(viewLifecycleOwner) { dataList ->
-            val tempCat = mutableListOf<String>()
-            dataList.forEach { result ->
-                result.values.forEach { tempCat.add(it) }
-            }
-            //insert the response into mainDatabase
-            topicAdapter.initData(tempCat)
+        chooseTopicViewModel.allCategoriesList.observe(viewLifecycleOwner) { dataList ->
+            topicAdapter.initData(dataList)
         }
     }
 
     private fun initClickListener() {
         binding.nextButton.setOnClickListener {
             findNavController().navigate(R.id.homeFragment)
+        }
+        topicAdapter.onItemClicked = { dataItem ->
+            chooseTopicViewModel.updateCategorySelectionState(
+                dataItem.isItemSelected, dataItem.cat_key
+            )
         }
     }
 
@@ -66,6 +65,6 @@ class ChooseTopicFragment : Fragment() {
     }
 
     private fun initView() {
-        mainViewModel.getAllCategoriesData()
+        chooseTopicViewModel.getAllCategoriesData()
     }
 }

@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_splash" />
     <fragment
         android:id="@+id/chooseTopicFragment"
-        android:name="com.faddy.techtrends.ui.fragments.ChooseTopicFragment"
+        android:name="com.faddy.techtrends.ui.fragments.chooseTopic.ChooseTopicFragment"
         android:label="fragment_choose_topic"
         tools:layout="@layout/fragment_choose_topic" />
     <fragment

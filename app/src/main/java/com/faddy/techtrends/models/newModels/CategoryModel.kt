@@ -8,5 +8,6 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "category_model")
 data class CategoryModel(
     @PrimaryKey @field:SerializedName("cat_key") var cat_key: String = "",
-    @SerializedName("cat_name") var cat_name: String = ""
+    @SerializedName("cat_name") var cat_name: String = "",
+    var isItemSelected: Boolean = false
 )

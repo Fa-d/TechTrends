@@ -19,57 +19,9 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository, private val sessionManager: SessionManager
 ) : ViewModel() {
-    var allCategoriesList = MutableLiveData<List<Map<String, String>>>()
     var allChildArticleModelList = MutableLiveData<List<ChildArticleModel>>()
     var allMotherArticleModelList = MutableLiveData<List<Map<String, String>>>()
 
-    fun getAllCategoriesData() {
-        viewModelScope.launch {
-            CoroutineScope(Dispatchers.IO).launch {
-                val previousObjects = mainRepository.getAllCategoriesFromDb()
-                if (previousObjects.isNotEmpty()) {
-                    val tempMap = mutableMapOf<String, String>()
-                    previousObjects.forEach {
-                        tempMap[it.cat_key] = it.cat_name
-                    }
-                    allCategoriesList.postValue(listOf(tempMap))
-                } else {
-                    getAllCategoriesFromApi()
-                }
-            }
-        }
-
-    }
-
-    private fun getAllCategoriesFromApi() {
-        mainRepository.getAllCategories()
-            .enqueue(object : retrofit2.Callback<List<Map<String, String>>> {
-                override fun onFailure(call: Call<List<Map<String, String>>>, t: Throwable) {}
-                override fun onResponse(
-                    call: Call<List<Map<String, String>>>,
-                    response: Response<List<Map<String, String>>>
-                ) {
-                    if (response.isSuccessful) {
-                        var apiResponse = response.body()
-                        val tempCategoryList = mutableListOf<CategoryModel>()
-                        apiResponse?.forEach {
-                            tempCategoryList.add(
-                                CategoryModel(
-                                    cat_key = it.keys.first(), cat_name = it.values.first()
-                                )
-                            )
-                        }
-                        viewModelScope.launch {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                mainRepository.insetCategory(tempCategoryList)
-                            }.invokeOnCompletion {
-                                getAllCategoriesData()
-                            }
-                        }
-                    }
-                }
-            })
-    }
 
     fun getAllChildArticlesData() {
         viewModelScope.launch {
