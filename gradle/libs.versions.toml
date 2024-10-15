@@ -19,6 +19,7 @@ kotlinx-serialization-json = "1.6.3"
 androidxDataStore = "1.1.1"
 protobufPlugin = "0.9.4"
 protobuf = "4.27.3"
+uiTextGoogleFonts = "1.7.3"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -47,6 +48,7 @@ androidx-dataStore = { group = "androidx.datastore", name = "datastore", version
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

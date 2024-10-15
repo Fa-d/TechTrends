@@ -1,6 +1,5 @@
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
@@ -32,8 +31,9 @@ android {
                 arguments(mapOf(Pair("room.schemaLocation", "$projectDir/schemas")))
             }
         }
-        val p = Properties()
-        p.load(project.rootProject.file("local.properties").reader())
+        val p = Properties().apply {
+            load(project.rootProject.file("local.properties").reader())
+        }
         val baseUrl: String = p.getProperty("baseUrl")
         buildConfigField("String", "baseUrl", "\"${baseUrl}\"")
     }
@@ -119,6 +119,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.ui.text.google.fonts)
     debugImplementation(libs.androidx.ui.tooling)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.room.runtime)
@@ -136,5 +137,9 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+    implementation("com.prof18.rssparser:rssparser:6.0.8")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
 
 }

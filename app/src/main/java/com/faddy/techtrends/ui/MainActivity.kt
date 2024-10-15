@@ -3,29 +3,44 @@ package com.faddy.techtrends.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.faddy.techtrends.core.MainViewModel
+import com.faddy.techtrends.nav.RMNavGraph
+import com.faddy.techtrends.ui.theme.TTTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        viewModel.getAllFeedsData()
+
+        actionBar?.hide()
+
+
         setContent {
-            UiNormal()
+            val navController: NavHostController = rememberNavController()
+            TTTheme {
+                Scaffold() { paddingValues ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues)
+                    ) {
+                        RMNavGraph(navController)
+                    }
+                }
+            }
         }
     }
 }
 
-
-@Composable
-fun UiNormal() {
-    Surface {
-        Text("dfgh")
-    }
-}
