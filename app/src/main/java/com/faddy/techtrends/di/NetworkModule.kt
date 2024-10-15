@@ -1,5 +1,6 @@
 package com.faddy.techtrends.di
 
+import com.faddy.techtrends.BuildConfig
 import com.faddy.techtrends.api.ApiService
 import com.google.gson.Gson
 import dagger.Module
@@ -40,5 +41,5 @@ object NetworkModule {
             .create(ApiService::class.java)
     }
 
-    val BASE_URL = "http://localhost"
+    val BASE_URL = BuildConfig.baseUrl
 }

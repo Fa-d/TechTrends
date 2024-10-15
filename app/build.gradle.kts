@@ -1,5 +1,7 @@
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -30,9 +32,14 @@ android {
                 arguments(mapOf(Pair("room.schemaLocation", "$projectDir/schemas")))
             }
         }
+        val p = Properties()
+        p.load(project.rootProject.file("local.properties").reader())
+        val baseUrl: String = p.getProperty("baseUrl")
+        buildConfigField("String", "baseUrl", "\"${baseUrl}\"")
     }
 
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
