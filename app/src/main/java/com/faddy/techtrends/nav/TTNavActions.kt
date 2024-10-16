@@ -18,4 +18,6 @@ class RMNavActions(private val navController: NavHostController) {
     fun navigateToTopicSelectScreen() {
         navController.navigate(TOPIC_SELECT_SCREEN) { launchSingleTop = true }
     }
+
+
 }

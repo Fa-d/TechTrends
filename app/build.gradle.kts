@@ -139,6 +139,6 @@ dependencies {
 
     implementation("com.prof18.rssparser:rssparser:6.0.8")
     implementation("androidx.core:core-splashscreen:1.0.1")
-
+    implementation(libs.lottie.compose)
 
 }

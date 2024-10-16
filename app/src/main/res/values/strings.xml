@@ -1,6 +1,26 @@
 <resources>
     <string name="app_name">TechTrends</string>
     <string name="terms_and_conditions">I agree to these <b>terms</b> &amp; <b> conditions</b> </string>
+
+    <string name="tos_content_short">
+    &lt;h5&gt;
+
+    Privacy Policy
+
+    &lt;/h5&gt;
+    &lt;br/&gt;
+    &lt;p&gt;
+
+    I take your privacy very seriously.
+
+    &lt;/p&gt;
+    &lt;br/&gt;
+    &lt;p&gt;
+    &lt;b&gt;Tech Trends&lt;/b&gt;
+    &lt;/p&gt;
+<b> See More</b>
+
+    </string>
     <string name="tos_content">
         &lt;h5&gt;
 
