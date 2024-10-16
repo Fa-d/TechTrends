@@ -7,6 +7,5 @@ import kotlinx.coroutines.flow.MutableStateFlow
 @HiltAndroidApp
 class MainApp : Application() {
 
-    val isLoadingComplete = MutableStateFlow(false)
 
 }

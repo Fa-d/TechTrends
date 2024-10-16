@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
+
         super.onCreate(savedInstanceState)
 
         actionBar?.hide()
@@ -30,15 +31,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController: NavHostController = rememberNavController()
             TTTheme {
-                Scaffold() { paddingValues ->
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(paddingValues)
                     ) {
                         RMNavGraph(navController)
                     }
-                }
+
             }
         }
     }

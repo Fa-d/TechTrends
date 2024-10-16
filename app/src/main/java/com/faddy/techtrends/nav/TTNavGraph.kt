@@ -1,5 +1,7 @@
 package com.faddy.techtrends.nav
 
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -9,18 +11,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.faddy.techtrends.MainApp
 import com.faddy.techtrends.core.MainViewModel
 import com.faddy.techtrends.nav.NavScreens.NEWSFEED_SCREEN
 import com.faddy.techtrends.nav.NavScreens.NEWS_DETAILS_SCREEN
 import com.faddy.techtrends.nav.NavScreens.PROFILE_SCREEN
-
 import com.faddy.techtrends.nav.NavScreens.SPLASH_SCREEN
 import com.faddy.techtrends.nav.NavScreens.TOPIC_SELECT_SCREEN
 import com.faddy.techtrends.nav.NavScreens.WELCOME_SCREEN
 import com.faddy.techtrends.ui.screens.SplashScreen
+import com.faddy.techtrends.ui.screens.WelcomeScreen
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
@@ -34,21 +34,18 @@ fun RMNavGraph(
     val mainViewModel: MainViewModel = hiltViewModel()
     val context = LocalContext.current
 
-    val isLoadingComplete = (context.applicationContext as MainApp).isLoadingComplete
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable(SPLASH_SCREEN) {
             SplashScreen()
             LaunchedEffect(key1 = "") {
-                isLoadingComplete.collectLatest { res ->
-                    if (res) {
-                        navActions.navigateToWelcomeScreen()
-                    }
-                }
+                Handler(Looper.getMainLooper()).postDelayed({
+                    navActions.navigateToWelcomeScreen()
+                }, 500L)
             }
         }
         composable(WELCOME_SCREEN) {
-
+            WelcomeScreen()
         }
         composable(TOPIC_SELECT_SCREEN) {}
         composable(NEWSFEED_SCREEN) {

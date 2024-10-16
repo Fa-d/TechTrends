@@ -1,5 +1,4 @@
 [versions]
-activityKtx = "1.9.2"
 agp = "8.5.2"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.0.20"
@@ -22,7 +21,6 @@ protobuf = "4.27.3"
 uiTextGoogleFonts = "1.7.3"
 
 [libraries]
-androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleViewmodelCompose" }
