@@ -3,7 +3,8 @@ package com.faddy.techtrends.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,13 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -26,20 +25,27 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.faddy.techtrends.R
+import com.faddy.techtrends.ui.fragments.chooseTopic.ChooseTopicViewModel
 
 @Composable
 @Preview(showSystemUi = true)
 fun TopicSelectScreen() {
-    Column {
+
+    Column(
+        modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -73,22 +79,38 @@ fun TopicSelectScreen() {
             modifier = Modifier.padding(start = 16.dp, end = 16.dp)
         )
         Spacer(modifier = Modifier.height(20.dp))
-        StaggeredGridOfOutlinedSelectableButtons()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1f, false)
+                .verticalScroll(rememberScrollState())
+        ) {
+            StaggeredGridSelectableList()
+        }
+        Button(
+            onClick = {},
+            Modifier
+                .padding(vertical = 20.dp, horizontal = 16.dp)
+                .fillMaxWidth()
+        ) {
+            Text("Next")
+        }
     }
 }
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun StaggeredGridOfOutlinedSelectableButtons() {
-    val items: List<String> = listOf("456789", "1", "2345", "23", "34567", "456789", "5678765432")
+fun StaggeredGridSelectableList() {
+    val viewModel = hiltViewModel<ChooseTopicViewModel>()
+    viewModel.getAllCategories()
+    val categoryState = viewModel.allCategoriesList.collectAsState()
+    val catList = categoryState.value.map { it -> it.name }.distinct().sortedBy { it.length }
+    val items: List<String> = catList
     val onItemSelected = {}
-    LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Adaptive(100.dp),
-        contentPadding = PaddingValues(5.dp),
-        verticalItemSpacing = 30.dp,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        items(items) { item ->
+
+    FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+        for (item in items) {
             StaggeredGridItem(item, onItemSelected)
         }
     }
@@ -97,31 +119,17 @@ fun StaggeredGridOfOutlinedSelectableButtons() {
 @Composable
 private fun StaggeredGridItem(item: String, onItemSelected: () -> Unit) {
     val isSelected = remember { mutableStateOf(false) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(horizontal = 8.dp),
-        verticalArrangement = Arrangement.SpaceAround
+    OutlinedButton(
+        onClick = {
+            isSelected.value = !isSelected.value
+            onItemSelected()
+        }, colors = if (isSelected.value) {
+            ButtonDefaults.outlinedButtonColors(Color.Gray)
+        } else {
+            ButtonDefaults.outlinedButtonColors()
+        }, modifier = Modifier.padding(3.dp)
     ) {
-        OutlinedButton(
-            onClick = {
-                isSelected.value = !isSelected.value
-                onItemSelected()
-            },
-            modifier = Modifier
-                .fillMaxSize()
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(16.dp),
-            colors = if (isSelected.value) {
-                ButtonDefaults.outlinedButtonColors()
-            } else {
-                ButtonDefaults.outlinedButtonColors()
-            }
-        ) {
-            Text(text = item, style = MaterialTheme.typography.bodyMedium)
-        }
-        Spacer(modifier = Modifier.weight(1f))
+        Text(text = item, style = MaterialTheme.typography.bodyMedium)
     }
 }
 

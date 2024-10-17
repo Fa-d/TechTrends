@@ -21,7 +21,7 @@ import com.faddy.techtrends.utils.LocalNavController
 
 @Composable
 fun RMNavGraph(
-    navController: NavHostController, startDestination: String = SPLASH_SCREEN
+    navController: NavHostController, startDestination: String = TOPIC_SELECT_SCREEN
 ) {
     val currentNav = LocalNavController.current
 
