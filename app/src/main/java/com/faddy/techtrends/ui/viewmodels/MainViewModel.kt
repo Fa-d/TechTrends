@@ -1,8 +1,9 @@
-package com.faddy.techtrends.core
+package com.faddy.techtrends.ui.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.faddy.techtrends.core.MainRepository
 import com.faddy.techtrends.models.FeedItem
 import com.faddy.techtrends.utils.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,5 +25,12 @@ class MainViewModel @Inject constructor(
                 feedItemList.postValue(tempFeedItemList)
             }
         }
+    }
+
+    suspend fun getFeedByCategory(category: String): List<FeedItem> {
+
+        return mainRepository.getFeedsByCategory(category)
+
+
     }
 }

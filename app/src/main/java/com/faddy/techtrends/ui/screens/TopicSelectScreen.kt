@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.faddy.techtrends.nav.NavScreens.NEWSFEED_SCREEN
-import com.faddy.techtrends.ui.fragments.chooseTopic.ChooseTopicViewModel
+import com.faddy.techtrends.ui.viewmodels.ChooseTopicViewModel
 import com.faddy.techtrends.utils.LocalNavController
 
 @Composable
@@ -104,8 +104,7 @@ fun StaggeredGridSelectableList() {
     val viewModel = hiltViewModel<ChooseTopicViewModel>()
     viewModel.getAllCategories()
     val categoryState = viewModel.allCategoriesList.collectAsState()
-    val catList = categoryState.value.map { it -> it.name }
-        // .distinct()
+    val catList = categoryState.value.map { it -> it.name }.distinct()
         .sortedBy { it.length }
     val items: List<String> = catList
     val onItemSelected = {}

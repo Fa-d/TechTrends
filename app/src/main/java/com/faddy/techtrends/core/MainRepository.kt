@@ -13,7 +13,7 @@ class MainRepository @Inject constructor(
 ) {
 
     suspend fun getAllCategories() = network.getAllCategories()
-    fun getFeedsByCategory(category: String) = network.getFeedsByCategory(category)
+    suspend fun getFeedsByCategory(category: String) = network.getFeedsByCategory(category)
     suspend fun getAllFeeds() = network.getAllFeeds()
 
     suspend fun insetChildArticleCategory(category: List<ChildArticleModel>) = mainDatabase.ChildArticleDao().insertCategory(category)

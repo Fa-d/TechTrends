@@ -1,4 +1,4 @@
-package com.faddy.techtrends.ui.fragments.chooseTopic
+package com.faddy.techtrends.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +21,8 @@ class ChooseTopicViewModel @Inject constructor(
     fun getAllCategories() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                allCategoriesList.emit(mainRepository.getAllCategories())
+                allCategoriesList.emit(mainRepository.getAllCategories()
+                    .filter { it.name.length <= 15 })
             }
         }
     }

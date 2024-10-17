@@ -36,7 +36,7 @@ fun AppBar() {
                 modifier = Modifier
                     .height(40.dp)
                     .width(40.dp),
-                painter = painterResource(R.drawable.round_logo),
+                painter = painterResource(R.drawable.logoround),
                 contentDescription = ""
             )
             Spacer(modifier = Modifier.weight(1f))
