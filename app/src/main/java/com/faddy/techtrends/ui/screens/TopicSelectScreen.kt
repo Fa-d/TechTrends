@@ -104,9 +104,9 @@ fun StaggeredGridSelectableList() {
     val viewModel = hiltViewModel<ChooseTopicViewModel>()
     viewModel.getAllCategories()
     val categoryState = viewModel.allCategoriesList.collectAsState()
-    val catList = categoryState.value.map { it -> it.name }.distinct()
+
+    val items: List<String> = categoryState.value.map { it -> it.name }.distinct()
         .sortedBy { it.length }
-    val items: List<String> = catList
     val onItemSelected = {}
 
     FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {

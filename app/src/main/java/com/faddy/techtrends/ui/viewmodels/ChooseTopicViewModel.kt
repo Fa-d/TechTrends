@@ -22,7 +22,7 @@ class ChooseTopicViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 allCategoriesList.emit(mainRepository.getAllCategories()
-                    .filter { it.name.length <= 15 })
+                    .filter { it.name.length <= 10 }.distinctBy { it.name })
             }
         }
     }

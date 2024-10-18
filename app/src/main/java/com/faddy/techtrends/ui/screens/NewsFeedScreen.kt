@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -28,12 +29,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.faddy.techtrends.R
-import com.faddy.techtrends.models.FeedItem
+import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
+
+import com.faddy.techtrends.models.FeedChildItem
 import com.faddy.techtrends.ui.viewmodels.ChooseTopicViewModel
 import com.faddy.techtrends.ui.viewmodels.MainViewModel
 
@@ -64,10 +68,10 @@ fun TabRowCom() {
                 SecondaryIndicator(
                     modifier = Modifier
                         .tabIndicatorOffset(tabPositions[selectedTabIndex])
-                        .fillMaxWidth(), color = Color.Black
+                        .fillMaxWidth()
                 )
             }) {
-            tabItem.value.forEachIndexed { index, tabItem ->
+            tabItem.value.distinct().forEachIndexed { index, tabItem ->
                 Tab(
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
@@ -85,12 +89,16 @@ fun TabRowCom() {
 @Composable
 fun ContentByTab(pageName: String) {
     val viewModel = hiltViewModel<MainViewModel>()
-    val response = remember { mutableStateOf<List<FeedItem>>(listOf()) }
+    val response = remember { mutableStateOf<List<FeedChildItem>>(listOf()) }
 
     LaunchedEffect(key1 = pageName) {
-        response.value = viewModel.getFeedByCategory(pageName)
+        response.value = viewModel.getAllFeedChildByCategory(pageName)
     }
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+    if (response.value.isEmpty()) CircularProgressIndicator() else Column(
+        modifier = Modifier.verticalScroll(
+            rememberScrollState()
+        )
+    ) {
         for (item in response.value) {
             ContentItem(item)
         }
@@ -101,37 +109,56 @@ fun ContentByTab(pageName: String) {
 
 //@Preview(showSystemUi = false, showBackground = true)
 @Composable
-fun ContentItem(feedItem: FeedItem) {
+fun ContentItem(feedItem: FeedChildItem) {
     // val feedItem = FeedItem("Feed Topic", "Feed Url", 1, "Link", "Title")
     Column {
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(16.dp))
-            Image(
-                painterResource(R.drawable.round_logo),
-                contentDescription = "",
-                modifier = Modifier.align(Alignment.CenterVertically)
+            AsyncImage(
+                model = feedItem.companyLogoUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .height(50.dp)
+                    .width(50.dp)
+                    .clip(CircleShape)
+
             )
+
             Spacer(modifier = Modifier.width(30.dp))
             Column {
-                Text(feedItem.feedTopic, style = MaterialTheme.typography.bodyLarge)
-                Text(feedItem.link, style = MaterialTheme.typography.bodySmall)
+                Text(feedItem.companyName, style = MaterialTheme.typography.bodyLarge)
+                Text(feedItem.datePosted, style = MaterialTheme.typography.bodySmall)
             }
             Spacer(modifier = Modifier.weight(1f))
             Image(
-                painterResource(R.drawable.three_dots),
+                painter = rememberAsyncImagePainter(feedItem.feedArticleUrl),
                 contentDescription = "",
-                modifier = Modifier.align(Alignment.CenterVertically)
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .height(50.dp)
+                    .width(50.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
         }
         Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            "Content Desc",
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
-                .fillMaxWidth()
-        )
+        Column {
+            Text(
+                feedItem.feedTitle,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxWidth()
+            )
+            Text(
+                feedItem?.feedContent?.substring(0, 100) ?: "",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxWidth()
+            )
+        }
+
         Spacer(modifier = Modifier.height(20.dp))
     }
 }
