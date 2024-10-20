@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.faddy.techtrends.core.MainRepository
 import com.faddy.techtrends.models.FeedChildItem
 import com.faddy.techtrends.models.FeedItem
-import com.faddy.techtrends.utils.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,9 +13,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val mainRepository: MainRepository, private val sessionManager: SessionManager
-) : ViewModel() {
+class MainViewModel @Inject constructor(private val mainRepository: MainRepository) : ViewModel() {
     var feedItemList = MutableLiveData<List<FeedItem>>()
 
     fun getAllFeedsData() {

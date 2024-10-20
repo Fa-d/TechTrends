@@ -1,5 +1,6 @@
 package com.faddy.techtrends.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.HtmlCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -36,6 +38,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.faddy.techtrends.R
 import com.faddy.techtrends.nav.NavScreens.TOPIC_SELECT_SCREEN
+import com.faddy.techtrends.ui.viewmodels.LandingViewmodel
 import com.faddy.techtrends.utils.ExpandableText
 import com.faddy.techtrends.utils.LocalNavController
 import com.faddy.techtrends.utils.toAnnotatedString
@@ -45,7 +48,9 @@ import com.faddy.techtrends.utils.toAnnotatedString
 fun WelcomeScreen() {
 
     val currentNav = LocalNavController.current
+    val viewModel: LandingViewmodel = hiltViewModel()
     var isChecked by rememberSaveable { mutableStateOf(false) }
+
 
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
@@ -69,8 +74,11 @@ fun WelcomeScreen() {
                 .wrapContentHeight()
         ) {
             Checkbox(
-                checked = isChecked,
-                onCheckedChange = { checked -> isChecked = checked },
+                checked = isChecked, onCheckedChange = { checked ->
+                    isChecked = checked
+                    viewModel.setTermsConditionChecked(checked)
+                    Log.e("TAG", "WelcomeScreen: $checked")
+                },
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
 

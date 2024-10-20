@@ -1,8 +1,13 @@
 package com.faddy.techtrends.models.newModels
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-
+@Entity(tableName = "category_table")
 data class CategoryModel(
-    @SerializedName("id") var id: Int = 0, @SerializedName("name") var name: String = ""
+    @PrimaryKey @field:SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("selectedByUser") val selectedByUser: String,
+
 )
