@@ -77,12 +77,12 @@ fun TabRowCom() {
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
                     text = {
-                        Text(text = tabItem.name)
+                        Text(text = tabItem.name?:"")
                     },
                 )
             }
         }
-        ContentByTab(tabItem.value[selectedTabIndex].name)
+        ContentByTab(tabItem.value[selectedTabIndex].name?:"")
     }
 }
 

@@ -31,7 +31,6 @@ class LandingViewmodel @Inject constructor(
     fun setTermsConditionChecked(value: Boolean) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Log.e("TAG", "setTermsConditionChecked: $value")
                 userPreferences.updateData { it.copy { this.isTermsAgreed = value } }
             }
         }

@@ -28,11 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.work.WorkManager
 import com.faddy.techtrends.models.newModels.CategoryModel
-import com.faddy.techtrends.nav.NavScreens.NEWSFEED_SCREEN
 import com.faddy.techtrends.ui.viewmodels.ChooseTopicViewModel
 import com.faddy.techtrends.utils.CenteredProgressbar
 import com.faddy.techtrends.utils.LocalNavController
@@ -42,7 +43,6 @@ import com.faddy.techtrends.utils.LocalNavController
 fun TopicSelectScreen() {
     val viewModel = hiltViewModel<ChooseTopicViewModel>()
     val typedText = remember { mutableStateOf("") }
-
     viewModel.getAllCategories()
     val categoryState = viewModel.allCategoriesList.collectAsState()
     val categoryCount = categoryState.value.count { it.selectedByUser == "user1" }
@@ -73,14 +73,16 @@ fun TopicSelectScreen() {
         ) {
             StaggeredGridSelectableList(viewModel, typedText.value)
         }
-        NextButton(categoryCount)
+        NextButton(categoryCount, viewModel)
     }
 }
 
 
 @Composable
-fun NextButton(categoryCount: Int) {
+fun NextButton(categoryCount: Int, viewModel: ChooseTopicViewModel) {
     val currentNav = LocalNavController.current
+    val worker = WorkManager.getInstance(LocalContext.current)
+
     Box(
         modifier = Modifier
             .padding(bottom = 20.dp)
@@ -92,8 +94,10 @@ fun NextButton(categoryCount: Int) {
             )
     ) {
         Button(
+
             onClick = {
-                currentNav.navigate(NEWSFEED_SCREEN) { launchSingleTop = true }
+                // currentNav.navigate(NEWSFEED_SCREEN) { launchSingleTop = true }
+                viewModel.startChildFeedFetching(worker)
             },
             Modifier
                 .padding(vertical = 20.dp, horizontal = 16.dp)
@@ -112,7 +116,7 @@ fun StaggeredGridSelectableList(viewModel: ChooseTopicViewModel, searchedItem: S
 
     val items: List<CategoryModel> = if (searchedItem.isNotEmpty()) {
         viewModel.allCategoriesList.collectAsState().value.filter {
-            it.name.contains(
+            it.name!!.contains(
                 searchedItem,
                 ignoreCase = true
             )
@@ -137,12 +141,15 @@ private fun StaggeredGridItem(item: CategoryModel, viewModel: ChooseTopicViewMod
             isSelected.value = !isSelected.value
             viewModel.setSelectedCategoryByUser(item.id)
         }, colors = if (item.selectedByUser == "user1") {
-            ButtonDefaults.outlinedButtonColors(Color.Gray)
+            ButtonDefaults.outlinedButtonColors(MaterialTheme.colorScheme.secondaryContainer)
         } else {
             ButtonDefaults.outlinedButtonColors()
         }, modifier = Modifier.padding(3.dp)
     ) {
-        Text(text = item.name, style = MaterialTheme.typography.bodyMedium)
+        Text(
+            text = item.name!!,
+            style = MaterialTheme.typography.bodyMedium,
+        )
     }
 }
 

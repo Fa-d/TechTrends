@@ -25,9 +25,6 @@ class MainViewModel @Inject constructor(private val mainRepository: MainReposito
         }
     }
 
-    suspend fun getFeedByCategory(category: String): List<FeedItem> {
-        return mainRepository.getFeedsByCategory(category)
-    }
 
 
     suspend fun getAllFeedChildByCategory(category: String): List<FeedChildItem> {

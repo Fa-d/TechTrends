@@ -77,7 +77,6 @@ fun WelcomeScreen() {
                 checked = isChecked, onCheckedChange = { checked ->
                     isChecked = checked
                     viewModel.setTermsConditionChecked(checked)
-                    Log.e("TAG", "WelcomeScreen: $checked")
                 },
                 modifier = Modifier.align(Alignment.CenterVertically)
             )

@@ -13,9 +13,6 @@ interface ApiService {
     @GET("getAllFeeds")
     suspend fun getAllFeeds(): List<FeedItem>
 
-    @GET("getFeedsByCategory")
-    suspend fun getFeedsByCategory(@Query("category") category: String): List<FeedItem>
-
     @GET("getAllFeedChildByCategory")
     suspend fun getAllFeedChildByCategory(@Query("category") category: String): List<FeedChildItem>
 

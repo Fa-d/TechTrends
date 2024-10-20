@@ -1,11 +1,15 @@
 package com.faddy.techtrends.models
 
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Entity(tableName = "feed_child_table")
 data class FeedChildItem(
+    @PrimaryKey(autoGenerate = true) @field:SerializedName("id") val id: Int,
     @SerializedName("category_id")
     var categoryId: Int = 0,
     @SerializedName("category_name")

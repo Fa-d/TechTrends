@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "category_table")
 data class CategoryModel(
     @PrimaryKey @field:SerializedName("id") val id: Int,
-    @SerializedName("name") val name: String,
-    @SerializedName("selectedByUser") val selectedByUser: String,
+    @SerializedName("name") val name: String?,
+    @SerializedName("selectedByUser") val selectedByUser: String?,
 
 )

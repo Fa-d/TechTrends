@@ -145,4 +145,7 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0-rc01")
 
 
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
 }
