@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.faddy.techtrends.nav.NavScreens.NEWSFEED_SCREEN
 import com.faddy.techtrends.ui.viewmodels.ChooseTopicViewModel
+import com.faddy.techtrends.utils.CenteredProgressbar
 import com.faddy.techtrends.utils.LocalNavController
 
 @Composable
@@ -109,7 +110,9 @@ fun StaggeredGridSelectableList() {
         .sortedBy { it.length }
     val onItemSelected = {}
 
-    FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+    if (items.isEmpty()) CenteredProgressbar() else FlowRow(
+        Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround
+    ) {
         for (item in items) {
             StaggeredGridItem(item, onItemSelected)
         }

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -40,6 +39,7 @@ import coil3.compose.rememberAsyncImagePainter
 import com.faddy.techtrends.models.FeedChildItem
 import com.faddy.techtrends.ui.viewmodels.ChooseTopicViewModel
 import com.faddy.techtrends.ui.viewmodels.MainViewModel
+import com.faddy.techtrends.utils.CenteredProgressbar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -60,7 +60,8 @@ fun TabRowCom() {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
 
-    if (tabItem.value.isEmpty()) CircularProgressIndicator() else Column(modifier = Modifier.fillMaxWidth()) {
+    if (tabItem.value.isEmpty()) CenteredProgressbar()
+    else Column(modifier = Modifier.fillMaxWidth()) {
         ScrollableTabRow(selectedTabIndex = selectedTabIndex,
             edgePadding = 16.dp,
             contentColor = Color.Gray,
@@ -94,7 +95,7 @@ fun ContentByTab(pageName: String) {
     LaunchedEffect(key1 = pageName) {
         response.value = viewModel.getAllFeedChildByCategory(pageName)
     }
-    if (response.value.isEmpty()) CircularProgressIndicator() else Column(
+    if (response.value.isEmpty()) CenteredProgressbar() else Column(
         modifier = Modifier.verticalScroll(
             rememberScrollState()
         )
