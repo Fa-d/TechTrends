@@ -24,12 +24,12 @@ class ChooseTopicViewModel @Inject constructor(
     private fun loadDataFromRoom() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val dataFromRoom = mainRepository.getAllCategoriesDB()
-                if (dataFromRoom.isEmpty()) {
-                    loadDataFromApi()
-                } else {
-                    allCategoriesList.emit(dataFromRoom.filter { it.name.length <= 10 }
-                        .distinctBy { it.name })
+                mainRepository.getAllCategoriesDB().collect { dataFromRoom ->
+                    if (dataFromRoom.isEmpty()) {
+                        loadDataFromApi()
+                    } else {
+                        allCategoriesList.emit(dataFromRoom.filter { it.name.length <= 10 })
+                    }
                 }
             }
         }
@@ -43,6 +43,14 @@ class ChooseTopicViewModel @Inject constructor(
                     .distinctBy { it.name }
                 mainRepository.insertAllCategories(apiData)
                 loadDataFromRoom()
+            }
+        }
+    }
+
+    fun setSelectedCategoryByUser(id: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                mainRepository.setSelectedCategoryByUser(id)
             }
         }
     }

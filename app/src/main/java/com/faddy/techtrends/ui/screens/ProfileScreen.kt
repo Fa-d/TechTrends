@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 @Composable
 fun ProfileScreen() {
     Column {
-        AppBar()
+        appBar()
         Text(text = "Profile Screen")
     }
 }

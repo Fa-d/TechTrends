@@ -45,7 +45,7 @@ import com.faddy.techtrends.utils.CenteredProgressbar
 @Composable
 fun NewsFeedScreen() {
     Column {
-        AppBar()
+        appBar()
         TabRowCom()
     }
 }

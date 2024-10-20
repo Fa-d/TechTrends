@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview
 fun FavScreen() {
     Column {
-        AppBar()
+        appBar()
         Text(text = "Fav Screen")
     }
 }

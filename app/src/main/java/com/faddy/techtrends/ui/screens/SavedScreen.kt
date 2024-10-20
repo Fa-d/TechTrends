@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview
 fun SavedScreen() {
     Column {
-        AppBar()
+        appBar()
         Text(text = "Saved Screen")
     }
 }

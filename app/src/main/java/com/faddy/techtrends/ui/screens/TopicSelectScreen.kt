@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.faddy.techtrends.models.newModels.CategoryModel
 import com.faddy.techtrends.nav.NavScreens.NEWSFEED_SCREEN
 import com.faddy.techtrends.ui.viewmodels.ChooseTopicViewModel
 import com.faddy.techtrends.utils.CenteredProgressbar
@@ -39,10 +40,17 @@ import com.faddy.techtrends.utils.LocalNavController
 @Composable
 @Preview(showSystemUi = true)
 fun TopicSelectScreen() {
+    val viewModel = hiltViewModel<ChooseTopicViewModel>()
+    val typedText = remember { mutableStateOf("") }
+
+    viewModel.getAllCategories()
+    val categoryState = viewModel.allCategoriesList.collectAsState()
+    val categoryCount = categoryState.value.count { it.selectedByUser == "user1" }
+
     Column(
         modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween
     ) {
-        AppBar()
+        typedText.value = appBar().value
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "What are you interested in ?",
@@ -51,7 +59,8 @@ fun TopicSelectScreen() {
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = "Choose up to 5 to get started",
+            text = if (categoryCount < 5) "Choose up to ${5 - categoryCount} to get started"
+            else "You can now proceed to next page.",
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp)
         )
@@ -62,15 +71,15 @@ fun TopicSelectScreen() {
                 .weight(1f, false)
                 .verticalScroll(rememberScrollState())
         ) {
-            StaggeredGridSelectableList()
+            StaggeredGridSelectableList(viewModel, typedText.value)
         }
-        NextButton()
+        NextButton(categoryCount)
     }
 }
 
 
 @Composable
-fun NextButton() {
+fun NextButton(categoryCount: Int) {
     val currentNav = LocalNavController.current
     Box(
         modifier = Modifier
@@ -78,10 +87,7 @@ fun NextButton() {
             .clip(shape = RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.Black.copy(alpha = 0.1f),
-                        Color.Transparent,
-                    )
+                    colors = listOf(Color.Black.copy(alpha = 0.1f), Color.Transparent)
                 )
             )
     ) {
@@ -91,7 +97,8 @@ fun NextButton() {
             },
             Modifier
                 .padding(vertical = 20.dp, horizontal = 16.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            enabled = categoryCount >= 5
         ) {
             Text("Next")
         }
@@ -101,38 +108,41 @@ fun NextButton() {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun StaggeredGridSelectableList() {
-    val viewModel = hiltViewModel<ChooseTopicViewModel>()
-    viewModel.getAllCategories()
-    val categoryState = viewModel.allCategoriesList.collectAsState()
+fun StaggeredGridSelectableList(viewModel: ChooseTopicViewModel, searchedItem: String) {
 
-    val items: List<String> = categoryState.value.map { it -> it.name }.distinct()
-        .sortedBy { it.length }
-    val onItemSelected = {}
-
+    val items: List<CategoryModel> = if (searchedItem.isNotEmpty()) {
+        viewModel.allCategoriesList.collectAsState().value.filter {
+            it.name.contains(
+                searchedItem,
+                ignoreCase = true
+            )
+        }
+    } else {
+        viewModel.allCategoriesList.collectAsState().value
+    }
     if (items.isEmpty()) CenteredProgressbar() else FlowRow(
         Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround
     ) {
         for (item in items) {
-            StaggeredGridItem(item, onItemSelected)
+            StaggeredGridItem(item, viewModel)
         }
     }
 }
 
 @Composable
-private fun StaggeredGridItem(item: String, onItemSelected: () -> Unit) {
+private fun StaggeredGridItem(item: CategoryModel, viewModel: ChooseTopicViewModel) {
     val isSelected = remember { mutableStateOf(false) }
     OutlinedButton(
         onClick = {
             isSelected.value = !isSelected.value
-            onItemSelected()
-        }, colors = if (isSelected.value) {
+            viewModel.setSelectedCategoryByUser(item.id)
+        }, colors = if (item.selectedByUser == "user1") {
             ButtonDefaults.outlinedButtonColors(Color.Gray)
         } else {
             ButtonDefaults.outlinedButtonColors()
         }, modifier = Modifier.padding(3.dp)
     ) {
-        Text(text = item, style = MaterialTheme.typography.bodyMedium)
+        Text(text = item.name, style = MaterialTheme.typography.bodyMedium)
     }
 }
 

@@ -20,7 +20,9 @@ class MainRepository @Inject constructor(
     suspend fun getAllChildArticleCategoryFromDb() = mainDatabase.ChildArticleDao().getAllServers()
     suspend fun clearAllChildArticleCategoryFromDb() = mainDatabase.ChildArticleDao().clearAllServerList()
 
-    suspend fun getAllCategoriesDB() = mainDatabase.categoryDao().getAllCategoriesDB()
+    fun getAllCategoriesDB() = mainDatabase.categoryDao().getAllCategoriesDB()
+    suspend fun setSelectedCategoryByUser(id: Int) =
+        mainDatabase.categoryDao().setSelectedCategoryByUser(id, "user1")
     suspend fun insertAllCategories(allData: List<CategoryModel>) =
         mainDatabase.categoryDao().insertCategories(allData)
 
