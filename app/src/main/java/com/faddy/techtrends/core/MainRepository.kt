@@ -4,7 +4,6 @@ import com.faddy.techtrends.api.ApiService
 import com.faddy.techtrends.db.MainDatabase
 import com.faddy.techtrends.models.FeedChildItem
 import com.faddy.techtrends.models.newModels.CategoryModel
-import com.faddy.techtrends.models.newModels.ChildArticleModel
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(
@@ -15,10 +14,6 @@ class MainRepository @Inject constructor(
     suspend fun getAllCategoriesAPI() = network.getAllCategoriesAPI()
     suspend fun getAllFeedChildByCategory(category: String) = network.getAllFeedChildByCategory(category)
     suspend fun getAllFeeds() = network.getAllFeeds()
-
-    suspend fun insetChildArticleCategory(category: List<ChildArticleModel>) = mainDatabase.ChildArticleDao().insertCategory(category)
-    suspend fun getAllChildArticleCategoryFromDb() = mainDatabase.ChildArticleDao().getAllServers()
-    suspend fun clearAllChildArticleCategoryFromDb() = mainDatabase.ChildArticleDao().clearAllServerList()
 
     fun getAllCategoriesDB() = mainDatabase.categoryDao().getAllCategoriesDB()
     suspend fun setSelectedCategoryByUser(id: Int) =

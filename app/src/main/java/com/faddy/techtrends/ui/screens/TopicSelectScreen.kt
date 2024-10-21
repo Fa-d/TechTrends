@@ -1,6 +1,5 @@
 package com.faddy.techtrends.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,11 +18,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -92,9 +92,10 @@ fun NextButton(categoryCount: Int, viewModel: ChooseTopicViewModel) {
     val currentNav = LocalNavController.current
     val worker = WorkManager.getInstance(LocalContext.current)
     val shouldShowDialog = remember { mutableStateOf(false) } // 1
+    val workProgress = remember { mutableStateOf(0f) } // 1
 
     if (shouldShowDialog.value) {
-        MyAlertDialog()
+        SyncDataDialog(workProgress)
     }
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 
@@ -118,11 +119,12 @@ fun NextButton(categoryCount: Int, viewModel: ChooseTopicViewModel) {
 
                 worker.getWorkInfosForUniqueWorkLiveData("categoryNamesFetch")
                     .observe(lifecycleOwner) { workInfos ->
+                        val totalWork = workInfos.size
+                        val doneWork = workInfos.count { it.state == WorkInfo.State.SUCCEEDED }
+                        workProgress.value = 1 - ((totalWork - doneWork).toFloat() / totalWork)
                         if (workInfos.all { it.state == WorkInfo.State.SUCCEEDED }) {
-                            Log.e("SUCCEEDED", "All Work")
                             currentNav.navigate(NEWSFEED_SCREEN) { launchSingleTop = true }
-                        } else if (workInfos.any { it.state == WorkInfo.State.FAILED }) {
-                            Log.e("Failed", workInfos.toString())
+                            viewModel.setTopicSelectedStatus()
                         }
                     }
             },
@@ -182,7 +184,7 @@ private fun StaggeredGridItem(item: CategoryModel, viewModel: ChooseTopicViewMod
 
 //@Preview(showBackground = true)
 @Composable
-fun MyAlertDialog() {
+fun SyncDataDialog(workProgress: MutableState<Float>) {
     Dialog(
         onDismissRequest = {},
         content = {
@@ -203,14 +205,16 @@ fun MyAlertDialog() {
                             .align(Alignment.CenterHorizontally)
                             .padding(vertical = 10.dp),
                     )
-                    CircularProgressIndicator(
+                    LinearProgressIndicator(
+                        progress = { workProgress.value },
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
-                            .padding(vertical = 10.dp)
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp),
+
                     )
                 }
             }
         },
     )
-
 }

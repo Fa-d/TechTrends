@@ -35,10 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
-
 import com.faddy.techtrends.models.FeedChildItem
-import com.faddy.techtrends.ui.viewmodels.ChooseTopicViewModel
-import com.faddy.techtrends.ui.viewmodels.MainViewModel
+import com.faddy.techtrends.ui.viewmodels.NewsFeedViewModel
 import com.faddy.techtrends.utils.CenteredProgressbar
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -54,42 +52,44 @@ fun NewsFeedScreen() {
 @ExperimentalFoundationApi
 @Composable
 fun TabRowCom() {
-    val viewModel = hiltViewModel<ChooseTopicViewModel>()
-    viewModel.getAllCategories()
-    val tabItem = viewModel.allCategoriesList.collectAsState()
+    val viewModel = hiltViewModel<NewsFeedViewModel>()
+    viewModel.getAllCategoriesData()
+    val tabItem = viewModel.allCategoriesListByUser.collectAsState()
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
 
-    if (tabItem.value.isEmpty()) CenteredProgressbar()
-    else Column(modifier = Modifier.fillMaxWidth()) {
-        ScrollableTabRow(selectedTabIndex = selectedTabIndex,
-            edgePadding = 16.dp,
-            contentColor = Color.Gray,
-            indicator = { tabPositions ->
-                SecondaryIndicator(
-                    modifier = Modifier
-                        .tabIndicatorOffset(tabPositions[selectedTabIndex])
-                        .fillMaxWidth()
-                )
-            }) {
-            tabItem.value.distinct().forEachIndexed { index, tabItem ->
-                Tab(
-                    selected = selectedTabIndex == index,
-                    onClick = { selectedTabIndex = index },
-                    text = {
-                        Text(text = tabItem.name?:"")
-                    },
-                )
+    if (tabItem.value.isEmpty()) {
+        CenteredProgressbar()
+    } else {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            ScrollableTabRow(selectedTabIndex = selectedTabIndex,
+                edgePadding = 16.dp,
+                contentColor = Color.Gray,
+                indicator = { tabPositions ->
+                    SecondaryIndicator(
+                        modifier = Modifier
+                            .tabIndicatorOffset(tabPositions[selectedTabIndex])
+                            .fillMaxWidth()
+                    )
+                }) {
+                tabItem.value.forEachIndexed { index, tabItem ->
+                    Tab(
+                        selected = selectedTabIndex == index,
+                        onClick = { selectedTabIndex = index },
+                        text = {
+                            Text(text = tabItem.name ?: "")
+                        },
+                    )
+                }
             }
+            ContentByTab(tabItem.value[selectedTabIndex].name ?: "", viewModel)
         }
-        ContentByTab(tabItem.value[selectedTabIndex].name?:"")
     }
 }
 
 
 @Composable
-fun ContentByTab(pageName: String) {
-    val viewModel = hiltViewModel<MainViewModel>()
+fun ContentByTab(pageName: String, viewModel: NewsFeedViewModel) {
     val response = remember { mutableStateOf<List<FeedChildItem>>(listOf()) }
 
     LaunchedEffect(key1 = pageName) {
@@ -98,7 +98,7 @@ fun ContentByTab(pageName: String) {
     if (response.value.isEmpty()) CenteredProgressbar() else Column(
         modifier = Modifier.verticalScroll(
             rememberScrollState()
-        )
+        ).padding(vertical = 20.dp)
     ) {
         for (item in response.value) {
             ContentItem(item)
@@ -108,10 +108,8 @@ fun ContentByTab(pageName: String) {
 }
 
 
-//@Preview(showSystemUi = false, showBackground = true)
 @Composable
 fun ContentItem(feedItem: FeedChildItem) {
-    // val feedItem = FeedItem("Feed Topic", "Feed Url", 1, "Link", "Title")
     Column {
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(16.dp))
