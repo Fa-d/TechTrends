@@ -63,7 +63,7 @@ class ChooseTopicViewModel @Inject constructor(
         }
     }
 
-    fun startChildFeedFetching(worker: WorkManager) {
+    fun startChildFeedFetching():List<OneTimeWorkRequest> {
         val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresStorageNotLow(true).setRequiresBatteryNotLow(true).build()
         val workReqList = mutableListOf<OneTimeWorkRequest>()
@@ -75,10 +75,6 @@ class ChooseTopicViewModel @Inject constructor(
                 ).addTag(categoryItem.name ?: "").setConstraints(constraints).build()
             )
         }
-        worker.enqueueUniqueWork(
-            "categoryNamesFetch", ExistingWorkPolicy.REPLACE, workReqList
-        )
-
-
+        return workReqList
     }
 }

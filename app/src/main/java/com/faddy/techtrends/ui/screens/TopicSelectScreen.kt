@@ -1,5 +1,6 @@
 package com.faddy.techtrends.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -24,22 +27,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.faddy.techtrends.models.newModels.CategoryModel
+import com.faddy.techtrends.nav.NavScreens.NEWSFEED_SCREEN
 import com.faddy.techtrends.ui.viewmodels.ChooseTopicViewModel
 import com.faddy.techtrends.utils.CenteredProgressbar
 import com.faddy.techtrends.utils.LocalNavController
 
 @Composable
-@Preview(showSystemUi = true)
 fun TopicSelectScreen() {
     val viewModel = hiltViewModel<ChooseTopicViewModel>()
     val typedText = remember { mutableStateOf("") }
@@ -82,6 +91,12 @@ fun TopicSelectScreen() {
 fun NextButton(categoryCount: Int, viewModel: ChooseTopicViewModel) {
     val currentNav = LocalNavController.current
     val worker = WorkManager.getInstance(LocalContext.current)
+    val shouldShowDialog = remember { mutableStateOf(false) } // 1
+
+    if (shouldShowDialog.value) {
+        MyAlertDialog()
+    }
+    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 
     Box(
         modifier = Modifier
@@ -94,10 +109,22 @@ fun NextButton(categoryCount: Int, viewModel: ChooseTopicViewModel) {
             )
     ) {
         Button(
-
             onClick = {
-                // currentNav.navigate(NEWSFEED_SCREEN) { launchSingleTop = true }
-                viewModel.startChildFeedFetching(worker)
+                shouldShowDialog.value = true
+                val workReqList = viewModel.startChildFeedFetching()
+                worker.beginUniqueWork(
+                    "categoryNamesFetch", ExistingWorkPolicy.REPLACE, workReqList
+                ).enqueue()
+
+                worker.getWorkInfosForUniqueWorkLiveData("categoryNamesFetch")
+                    .observe(lifecycleOwner) { workInfos ->
+                        if (workInfos.all { it.state == WorkInfo.State.SUCCEEDED }) {
+                            Log.e("SUCCEEDED", "All Work")
+                            currentNav.navigate(NEWSFEED_SCREEN) { launchSingleTop = true }
+                        } else if (workInfos.any { it.state == WorkInfo.State.FAILED }) {
+                            Log.e("Failed", workInfos.toString())
+                        }
+                    }
             },
             Modifier
                 .padding(vertical = 20.dp, horizontal = 16.dp)
@@ -153,3 +180,37 @@ private fun StaggeredGridItem(item: CategoryModel, viewModel: ChooseTopicViewMod
     }
 }
 
+//@Preview(showBackground = true)
+@Composable
+fun MyAlertDialog() {
+    Dialog(
+        onDismissRequest = {},
+        content = {
+            Card {
+                Column(modifier = Modifier.padding(20.dp)) {
+
+                    Text(
+                        text = "Syncing your data.",
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(vertical = 10.dp),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Text(
+                        text = "Please give us a moment while we build your feed.",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(vertical = 10.dp),
+                    )
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(vertical = 10.dp)
+                    )
+                }
+            }
+        },
+    )
+
+}
