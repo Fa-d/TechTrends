@@ -13,6 +13,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 
 
@@ -47,3 +48,7 @@ fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
 val LocalNavController = staticCompositionLocalOf<NavController> {
     error("NavController not provided")
 }
+
+fun String.getHtmlFormattedString() =
+    HtmlCompat.fromHtml(this@getHtmlFormattedString, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        .toAnnotatedString().toString()

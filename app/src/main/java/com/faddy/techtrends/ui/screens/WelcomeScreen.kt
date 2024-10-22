@@ -1,6 +1,5 @@
 package com.faddy.techtrends.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -41,7 +39,7 @@ import com.faddy.techtrends.nav.NavScreens.TOPIC_SELECT_SCREEN
 import com.faddy.techtrends.ui.viewmodels.LandingViewmodel
 import com.faddy.techtrends.utils.ExpandableText
 import com.faddy.techtrends.utils.LocalNavController
-import com.faddy.techtrends.utils.toAnnotatedString
+import com.faddy.techtrends.utils.getHtmlFormattedString
 
 @Composable
 @Preview(showSystemUi = true)
@@ -89,9 +87,7 @@ fun WelcomeScreen() {
         }
 
         ExpandableText(
-            text = HtmlCompat.fromHtml(
-                stringResource(R.string.tos_content), HtmlCompat.FROM_HTML_MODE_COMPACT
-            ).toAnnotatedString().toString(),
+            text = stringResource(R.string.tos_content).getHtmlFormattedString(),
             modifier = Modifier.padding(top = 20.dp, start = 16.dp, end = 16.dp),
             minimizedMaxLines = 9
         )
