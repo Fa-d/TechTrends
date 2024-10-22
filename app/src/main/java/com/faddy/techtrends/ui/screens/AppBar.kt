@@ -30,7 +30,7 @@ import com.faddy.techtrends.R
 
 @Composable
 @Preview(showSystemUi = true)
-fun appBar(): MutableState<String> {
+fun appBar(showSearch: Boolean = true): MutableState<String> {
     val typedText = remember { mutableStateOf("") }
     val selected = remember { mutableStateOf(true) }
 
@@ -58,14 +58,15 @@ fun appBar(): MutableState<String> {
                     .weight(1f)
                     .padding(horizontal = 10.dp)
             )
-
-            Icon(imageVector = Icons.Filled.Search,
-                contentDescription = "Search",
-                modifier = Modifier
-                    .scale(1.2f)
-                    .clickable {
-                        selected.value = !selected.value
-                    })
+            if (showSearch) {
+                Icon(imageVector = Icons.Filled.Search,
+                    contentDescription = "Search",
+                    modifier = Modifier
+                        .scale(1.2f)
+                        .clickable {
+                            selected.value = !selected.value
+                        })
+            }
         }
     }
 

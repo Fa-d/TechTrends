@@ -2,9 +2,11 @@ package com.faddy.techtrends.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,11 +21,9 @@ import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -90,18 +90,22 @@ fun TabRowCom() {
 
 @Composable
 fun ContentByTab(pageName: String, viewModel: NewsFeedViewModel) {
-    val response = remember { mutableStateOf<List<FeedChildItem>>(listOf()) }
+    viewModel.getAllFeedChildByCategory(pageName)
+    val response = viewModel.feedChildItemByCategory.collectAsState()
 
-    LaunchedEffect(key1 = pageName) {
-        response.value = viewModel.getAllFeedChildByCategory(pageName)
-    }
-    if (response.value.isEmpty()) CenteredProgressbar() else Column(
-        modifier = Modifier.verticalScroll(
-            rememberScrollState()
-        ).padding(vertical = 20.dp)
-    ) {
-        for (item in response.value) {
-            ContentItem(item)
+    if (response.value.isEmpty()) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("No Data Found", style = MaterialTheme.typography.titleMedium)
+        }
+    } else {
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(vertical = 20.dp)
+        ) {
+            for (item in response.value) {
+                ContentItem(item)
+            }
         }
     }
 

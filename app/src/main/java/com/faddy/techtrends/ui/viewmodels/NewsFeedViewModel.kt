@@ -1,6 +1,5 @@
 package com.faddy.techtrends.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,6 +19,7 @@ class NewsFeedViewModel @Inject constructor(private val mainRepository: MainRepo
     ViewModel() {
     var feedItemList = MutableLiveData<List<FeedItem>>()
     var allCategoriesListByUser = MutableStateFlow<List<CategoryModel>>(listOf())
+    var feedChildItemByCategory = MutableStateFlow<List<FeedChildItem>>(listOf())
 
     fun getAllFeedsData() {
         viewModelScope.launch {
@@ -45,7 +45,11 @@ class NewsFeedViewModel @Inject constructor(private val mainRepository: MainRepo
     }
 
 
-    suspend fun getAllFeedChildByCategory(category: String): List<FeedChildItem> {
-        return mainRepository.getAllFeedChildByCategory(category)
+     fun getAllFeedChildByCategory(category: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                feedChildItemByCategory.emit(mainRepository.getAllFeedChildItemByCategoryDB(category))
+            }
+        }
     }
 }

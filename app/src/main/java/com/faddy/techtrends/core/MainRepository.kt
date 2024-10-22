@@ -24,5 +24,7 @@ class MainRepository @Inject constructor(
     suspend fun deleteAllCategories() = mainDatabase.categoryDao().deleteAllCategories()
     suspend fun insertAllFeedChildItem(feedChildList: List<FeedChildItem>) =
         mainDatabase.feedChildDao().insertFeedChild(feedChildList)
+    suspend fun getAllFeedChildItemByCategoryDB(category: String) =
+        mainDatabase.feedChildDao().getAllFeedChildItemByCategoryDB(category)
 
 }

@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
                                 BottomNavigationBar(navController)
                             }
                         },
-                        contentWindowInsets = WindowInsets(0, 0, 0, 40),
+                        contentWindowInsets = WindowInsets(0, 0, 0, 0),
                     ) { paddingValues ->
                         Box(
                             modifier = Modifier
