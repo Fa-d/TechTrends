@@ -1,4 +1,4 @@
-package com.faddy.techtrends.models.newModels
+package com.faddy.techtrends.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

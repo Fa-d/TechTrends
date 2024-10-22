@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.faddy.techtrends.models.newModels.CategoryModel
+import com.faddy.techtrends.models.CategoryModel
 import kotlinx.coroutines.flow.Flow
 
 
@@ -20,6 +20,9 @@ interface CategoryDao {
     suspend fun deleteAllCategories(): Int
 
     @Query("UPDATE category_table SET selectedByUser = CASE WHEN LENGTH(selectedByUser) > 0 THEN '' ELSE :selectedByUser END WHERE id = :id")
-    suspend fun setSelectedCategoryByUser(id: Int, selectedByUser: String)
+    suspend fun setSelectedCategoryByUser(id: Int, selectedByUser: String = "user1")
+
+    @Query("UPDATE category_table SET selectedByUser = '' WHERE name = :categoryName")
+    suspend fun removeCategoryFromSelected(categoryName: String)
 
 }

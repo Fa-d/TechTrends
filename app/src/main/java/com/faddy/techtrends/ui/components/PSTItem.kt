@@ -1,5 +1,7 @@
-package com.faddy.techtrends.ui.screens
+package com.faddy.techtrends.ui.components
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,29 +32,35 @@ data class PSTItemData(
 fun PSTItem(
     pSTItemData: PSTItemData = PSTItemData(
         icon = Icons.Filled.AccountCircle, title = "Accounts", subtitle = "Your Logged In Accounts"
-    )
+    ), onClick: () -> Unit = {}
 ) {
-    Row(
-        modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 15.dp)
-            .fillMaxWidth()
-    ) {
-        Icon(
-            imageVector = pSTItemData.icon,
-            contentDescription = "",
+
+    Box(modifier = Modifier.clickable {
+        onClick.invoke()
+    }) {
+        Row(
             modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .scale(1.2f)
-        )
-        Spacer(modifier = Modifier.width(15.dp))
-        Column {
-            Text(pSTItemData.title, style = MaterialTheme.typography.bodyMedium)
-            if (pSTItemData.subtitle.isNotEmpty()) {
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    pSTItemData.subtitle, style = MaterialTheme.typography.labelMedium
-                )
+                .fillMaxWidth()
+                .padding(vertical = 15.dp, horizontal = 20.dp)
+        ) {
+            Icon(
+                imageVector = pSTItemData.icon,
+                contentDescription = "",
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .scale(1.2f)
+            )
+            Spacer(modifier = Modifier.width(15.dp))
+            Column {
+                Text(pSTItemData.title, style = MaterialTheme.typography.bodyMedium)
+                if (pSTItemData.subtitle.isNotEmpty()) {
+                    Spacer(Modifier.height(5.dp))
+                    Text(
+                        pSTItemData.subtitle, style = MaterialTheme.typography.labelMedium
+                    )
+                }
             }
         }
     }
+
 }

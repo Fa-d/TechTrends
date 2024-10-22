@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -42,8 +43,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import com.faddy.techtrends.models.newModels.CategoryModel
+import com.faddy.techtrends.models.CategoryModel
 import com.faddy.techtrends.nav.NavScreens.NEWSFEED_SCREEN
+import com.faddy.techtrends.ui.components.appBar
 import com.faddy.techtrends.ui.viewmodels.ChooseTopicViewModel
 import com.faddy.techtrends.utils.CenteredProgressbar
 import com.faddy.techtrends.utils.LocalNavController
@@ -92,7 +94,7 @@ fun NextButton(categoryCount: Int, viewModel: ChooseTopicViewModel) {
     val currentNav = LocalNavController.current
     val worker = WorkManager.getInstance(LocalContext.current)
     val shouldShowDialog = remember { mutableStateOf(false) } // 1
-    val workProgress = remember { mutableStateOf(0f) } // 1
+    val workProgress = remember { mutableFloatStateOf(0f) } // 1
 
     if (shouldShowDialog.value) {
         SyncDataDialog(workProgress)
@@ -112,16 +114,16 @@ fun NextButton(categoryCount: Int, viewModel: ChooseTopicViewModel) {
         Button(
             onClick = {
                 shouldShowDialog.value = true
-                val workReqList = viewModel.startChildFeedFetching()
+                val workReqList = viewModel.startFeedFetching()
                 worker.beginUniqueWork(
-                    "categoryNamesFetch", ExistingWorkPolicy.REPLACE, workReqList
+                    "fetchFeedsByCategory", ExistingWorkPolicy.REPLACE, workReqList
                 ).enqueue()
 
-                worker.getWorkInfosForUniqueWorkLiveData("categoryNamesFetch")
+                worker.getWorkInfosForUniqueWorkLiveData("fetchFeedsByCategory")
                     .observe(lifecycleOwner) { workInfos ->
                         val totalWork = workInfos.size
                         val doneWork = workInfos.count { it.state == WorkInfo.State.SUCCEEDED }
-                        workProgress.value = 1 - ((totalWork - doneWork).toFloat() / totalWork)
+                        workProgress.floatValue = 1 - ((totalWork - doneWork).toFloat() / totalWork)
                         if (workInfos.all { it.state == WorkInfo.State.SUCCEEDED }) {
                             currentNav.navigate(NEWSFEED_SCREEN) { launchSingleTop = true }
                             viewModel.setTopicSelectedStatus()

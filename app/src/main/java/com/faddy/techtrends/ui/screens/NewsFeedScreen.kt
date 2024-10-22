@@ -26,11 +26,13 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,10 +46,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import com.faddy.techtrends.R
-import com.faddy.techtrends.models.FeedChildItem
+import com.faddy.techtrends.models.FeedItem
+import com.faddy.techtrends.ui.components.appBar
 import com.faddy.techtrends.ui.viewmodels.NewsFeedViewModel
 import com.faddy.techtrends.utils.CenteredProgressbar
 import com.faddy.techtrends.utils.getHtmlFormattedString
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -100,12 +104,17 @@ fun TabRowCom() {
 
 @Composable
 fun ContentByTab(pageName: String, viewModel: NewsFeedViewModel) {
-    viewModel.getAllFeedChildByCategory(pageName)
-    val response = viewModel.feedChildItemByCategory.collectAsState()
+    LaunchedEffect(pageName) {
+        viewModel.getAllFeedByCategory(pageName)
+    }
+    val response = viewModel.feedItemByCategory.collectAsState()
 
     if (response.value.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("No Data Found", style = MaterialTheme.typography.titleMedium)
+            Text(
+                "No articles currently available for this category.",
+                style = MaterialTheme.typography.titleMedium
+            )
         }
     } else {
         Column(
@@ -125,8 +134,9 @@ fun ContentByTab(pageName: String, viewModel: NewsFeedViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(showBackground = true)
-fun ContentItem(feedItem: FeedChildItem = FeedChildItem(id = 0)) {
+fun ContentItem(feedItem: FeedItem = FeedItem(id = 0)) {
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val coroutineScope = rememberCoroutineScope()
     val clickState = remember { mutableStateOf(false) }
     Column {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -167,11 +177,16 @@ fun ContentItem(feedItem: FeedChildItem = FeedChildItem(id = 0)) {
                         clickState.value = true
                     })
             if (clickState.value) {
-                ModalBottomSheet(onDismissRequest = {
-                    clickState.value = false
-                }, sheetState = bottomSheetState) {
-                    NewsBottomSheet(feedItem)
-                }
+                ModalBottomSheet(onDismissRequest = { clickState.value = false },
+                    sheetState = bottomSheetState,
+                    content = {
+                        NewsBottomSheet(feedItem, onDismissed = {
+                            coroutineScope.launch {
+                                bottomSheetState.hide()
+                                clickState.value = false
+                            }
+                        })
+                    })
             }
 
         }

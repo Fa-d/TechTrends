@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @HiltWorker
-class CategoriesSyncWorker @AssistedInject constructor(
+class FeedSyncPerCategoryWorker @AssistedInject constructor(
     @Assisted val context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val mainRepository: MainRepository
@@ -21,12 +21,11 @@ class CategoriesSyncWorker @AssistedInject constructor(
         try {
             withContext(Dispatchers.IO) {
                 val categoryName = inputData.getString("categoryName") ?: ""
-                val response = mainRepository.getAllFeedChildByCategory(categoryName)
-                mainRepository.insertAllFeedChildItem(response)
+                val response = mainRepository.getAllFeedByCategory(categoryName)
+                mainRepository.insertAllFeedItem(response)
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            //return Result.retry()
         }
         return Result.success()
     }

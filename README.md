@@ -5,11 +5,17 @@
 - [X] Load App/button theme as dynamic system theme
 - [X] Call API And Save to DB
   - [X] CATEGORIES DONE
-  - [ ] articles need to be done
-- [ ] Fetch data through workmanager (selected topic data)
-- [ ]  Newsfeed design
-- [ ]  Full Article page
-- [ ]  newsfeed BottomSheet
-- [ ]  Save And Show Fav Articles 
-- [ ] Complete Profile page
+  - [x] articles need to be done
+- [x] Fetch data through workmanager (selected topic data)
+- [x]  Newsfeed design
+- [x]  newsfeed BottomSheet
+- [x]  Save And Show Fav Articles
+- [x] Complete Profile page
 - [ ] Social Login
+- [ ] Languages
+- [ ] Full Article page
+- [ ] Fav Page
+- [ ] Saved items page
+- [ ] paginate
+  - [ ] api calls
+  - [ ] room query data fetch

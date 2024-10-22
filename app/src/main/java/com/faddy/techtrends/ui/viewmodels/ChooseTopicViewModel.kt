@@ -11,8 +11,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import com.faddy.techtrends.core.MainRepository
 import com.faddy.techtrends.datastore.TtPref
 import com.faddy.techtrends.datastore.copy
-import com.faddy.techtrends.models.newModels.CategoryModel
-import com.faddy.techtrends.work.CategoriesSyncWorker
+import com.faddy.techtrends.models.CategoryModel
+import com.faddy.techtrends.work.FeedSyncPerCategoryWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,7 +65,7 @@ class ChooseTopicViewModel @Inject constructor(
         }
     }
 
-    fun startChildFeedFetching(): List<OneTimeWorkRequest> {
+    fun startFeedFetching(): List<OneTimeWorkRequest> {
         val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresStorageNotLow(true).setRequiresBatteryNotLow(true).build()
         val workReqList = mutableListOf<OneTimeWorkRequest>()
@@ -73,7 +73,7 @@ class ChooseTopicViewModel @Inject constructor(
         allCategoriesList.value.forEach { categoryItem ->
             if (categoryItem.selectedByUser == "user1") {
                 workReqList.add(
-                    OneTimeWorkRequestBuilder<CategoriesSyncWorker>().setInputData(
+                    OneTimeWorkRequestBuilder<FeedSyncPerCategoryWorker>().setInputData(
                         inputData = Data.Builder().putString("categoryName", categoryItem.name)
                             .build()
                     ).addTag(categoryItem.name ?: "").setConstraints(constraints).build()

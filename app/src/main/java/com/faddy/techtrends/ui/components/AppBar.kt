@@ -1,4 +1,4 @@
-package com.faddy.techtrends.ui.screens
+package com.faddy.techtrends.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
