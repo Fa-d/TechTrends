@@ -19,3 +19,14 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepattributes Signature
+
+# -printusage unused-code.txt
+-keep class androidx.datastore.*.** {*;}
+-keepclassmembers class * extends com.google.protobuf.GeneratedMessageLite* {
+   <fields>;
+}
+
+-include proguard_other/gson_rules.pro
+-include proguard_other/okhttp-rules.pro
+-include proguard_other/retrofit_rules.pro

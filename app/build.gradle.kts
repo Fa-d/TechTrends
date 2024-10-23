@@ -12,29 +12,31 @@ plugins {
     id("kotlin-parcelize")
     alias(libs.plugins.protobuf)
     alias(libs.plugins.compose.compiler)
-
+    // id("com.autonomousapps.dependency-analysis")
 }
 
 android {
-    namespace = "com.faddy.techtrends"
+    namespace = "dev.experimental.techtrends"
     compileSdk = 35
+    val p = Properties().apply {
+        load(project.rootProject.file("local.properties").reader())
+    }
+    val baseUrl: String = p.getProperty("baseUrl")
+    val appVersionCode: String = p.getProperty("appVersionCode")
+    val appVersionName: String = p.getProperty("appVersionName")
 
     defaultConfig {
-        applicationId = "com.faddy.techtrends"
+        applicationId = "dev.experimental.techtrends"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.0.1"
+        versionCode = Integer.parseInt(appVersionCode)
+        versionName = "${appVersionName}"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments(mapOf(Pair("room.schemaLocation", "$projectDir/schemas")))
             }
         }
-        val p = Properties().apply {
-            load(project.rootProject.file("local.properties").reader())
-        }
-        val baseUrl: String = p.getProperty("baseUrl")
         buildConfigField("String", "baseUrl", "\"${baseUrl}\"")
     }
 
@@ -45,12 +47,26 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+
+    signingConfigs {
+        create("release") {
+            keyAlias = "testDebugKey"
+            keyPassword = "123456"
+            storeFile = file("\\key\\testDebugKey.jks")
+            storePassword = "123456"
+        }
+    }
     buildTypes {
-        release {
-            isMinifyEnabled = false
+        getByName("release") {
+            isMinifyEnabled = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+        }
+        getByName("debug") {
+            isDebuggable = true
         }
     }
     compileOptions {
@@ -71,6 +87,18 @@ android {
         jniLibs {
             useLegacyPackaging = true
         }
+    }
+    applicationVariants.all {
+        val variant = this
+        variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+            .forEach { output ->
+                val outputFileName = if (output.outputFileName.endsWith(".aab")) {
+                    "Tech Trends - ${variant.baseName} - ${variant.versionName} ${variant.versionCode}.aab"
+                } else {
+                    "Tech Trends-${variant.baseName}-${variant.versionName}.apk"
+                }
+                output.outputFileName = outputFileName
+            }
     }
 }
 
@@ -137,8 +165,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
-    implementation("com.prof18.rssparser:rssparser:6.0.8")
-    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation(libs.lottie.compose)
 
     implementation("io.coil-kt.coil3:coil-compose:3.0.0-rc01")

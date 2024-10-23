@@ -1,5 +1,5 @@
 syntax="proto3";
-option java_package = "com.faddy.techtrends.datastore";
+option java_package = "dev.experimental.techtrends.datastore";
 option java_multiple_files = true;
 
 message TtPref{
