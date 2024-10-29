@@ -1,0 +1,138 @@
+package dev.experimental.techtrends.ui.components
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
+import dev.experimental.techtrends.R
+import dev.experimental.techtrends.models.FeedItem
+import dev.experimental.techtrends.ui.screens.NewsBottomSheet
+import dev.experimental.techtrends.ui.theme.HomeTypography
+import dev.experimental.techtrends.utils.getHtmlFormattedString
+import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview(showBackground = true)
+fun FeedContentItem(
+    feedItem: FeedItem = FeedItem(
+        id = 0,
+        companyName = "Company name",
+        feedContent = "The 1921 Centre vs. Harvard football game was a regular-season collegiate American football game played on October 29, 1921, at Harvard Stadium in Boston, Massachusetts. The contest featured the undefeated Centre Praying Colonels, representing Centre College, and the undefeated Harvard Crimson, representing Harvard University. Centre entered the game as heavy underdogs, as Harvard had received 3-to-1 odds to win prior to kickoff. The only score of the game came less than two minutes into the third quarter when Centre quarterback Bo McMillin rushed for a touchdown. The conversion failed but the Colonels' defense held for the remainder of the game, and Centre won the game 6–0. The game is widely viewed as one of the largest upsets in college football history. It is often referred to by the shorthand \"C6H0\"; this originated shortly after the game when a Centre professor remarked that Harvard had been poisoned by this \"impossible\" chemical formula. ",
+        datePosted = "20-04-2024",
+        companyLogoUrl = "https://en.wikipedia.org/static/images/icons/wikipedia.png"
+    )
+) {
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val coroutineScope = rememberCoroutineScope()
+    val clickState = remember { mutableStateOf(false) }
+    Column {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Spacer(modifier = Modifier.width(16.dp))
+            AsyncImage(
+                model = feedItem.companyLogoUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .height(35.dp)
+                    .width(35.dp)
+                    .clip(CircleShape)
+
+            )
+
+            Spacer(modifier = Modifier.width(15.dp))
+            Column {
+                Text(feedItem.companyName, style = HomeTypography.titleMedium)
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(feedItem.datePosted, style = HomeTypography.titleSmall)
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Image(
+                painter = rememberAsyncImagePainter(feedItem.feedArticleUrl),
+                contentDescription = "",
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .height(50.dp)
+                    .width(50.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Icon(painter = painterResource(R.drawable.three_dots),
+                contentDescription = "",
+                modifier = Modifier
+                    .padding(end = 20.dp)
+                    .align(alignment = Alignment.CenterVertically)
+                    .clickable {
+                        clickState.value = true
+                    })
+            if (clickState.value) {
+                ModalBottomSheet(onDismissRequest = { clickState.value = false },
+                    sheetState = bottomSheetState,
+                    content = {
+                        NewsBottomSheet(feedItem, onDismissed = {
+                            coroutineScope.launch {
+                                bottomSheetState.hide()
+                                clickState.value = false
+                            }
+                        })
+                    })
+            }
+
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Column {
+            Text(
+                feedItem.feedTitle,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxWidth()
+            )
+            Text(
+                //  text = feedItem.feedContent?.substring(0, 100)?.getHtmlFormattedString() ?: "",
+                text = if ((feedItem.feedContent?.length
+                        ?: 0) > 100
+                ) feedItem.feedContent?.substring(0, 100)!!.getHtmlFormattedString()
+                else feedItem.feedContent ?: "",
+                style = HomeTypography.displayMedium,
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxWidth()
+            )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        HorizontalDivider(
+            modifier = Modifier
+                .height(1.dp)
+                .padding(horizontal = 16.dp)
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+    }
+}

@@ -33,6 +33,29 @@ val displayFontFamily = bodyFontFamily/*FontFamily(
     )
 )
 */
+val HomeTypography = Typography(
+    titleMedium = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        lineHeight = 18.sp,
+        letterSpacing = 0.25.sp,
+        fontFamily = displayFontFamily,
+    ),
+    titleSmall = TextStyle(
+        fontWeight = FontWeight.Light,
+        fontSize = 10.sp,
+        lineHeight = 14.sp,
+        letterSpacing = 0.25.sp,
+        fontFamily = displayFontFamily,
+    ),
+    displayMedium = TextStyle(
+        fontWeight = FontWeight.Light,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.25.sp,
+        fontFamily = displayFontFamily,
+    ),
+)
 val AppTypography = Typography(
     displayLarge = TextStyle(
         fontWeight = FontWeight.Normal,
