@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import dev.experimental.techtrends.nav.BottomNavigationBar
 import dev.experimental.techtrends.nav.NavScreens.FAV_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.NEWSFEED_SCREEN
@@ -23,7 +24,6 @@ import dev.experimental.techtrends.nav.NavScreens.SAVED_SCREEN
 import dev.experimental.techtrends.nav.RMNavGraph
 import dev.experimental.techtrends.ui.theme.TTTheme
 import dev.experimental.techtrends.utils.LocalNavController
-import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

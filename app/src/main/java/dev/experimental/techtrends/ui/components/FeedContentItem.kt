@@ -1,6 +1,7 @@
 package dev.experimental.techtrends.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,10 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -24,6 +25,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +35,7 @@ import coil3.compose.rememberAsyncImagePainter
 import dev.experimental.techtrends.R
 import dev.experimental.techtrends.models.FeedItem
 import dev.experimental.techtrends.ui.screens.NewsBottomSheet
+import dev.experimental.techtrends.ui.theme.FeedContentTypography
 import dev.experimental.techtrends.ui.theme.HomeTypography
 import dev.experimental.techtrends.utils.getHtmlFormattedString
 import kotlinx.coroutines.launch
@@ -63,6 +66,7 @@ fun FeedContentItem(
                     .height(35.dp)
                     .width(35.dp)
                     .clip(CircleShape)
+                    .background(Color.LightGray)
 
             )
 
@@ -105,33 +109,51 @@ fun FeedContentItem(
             }
 
         }
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(5.dp))
         Column {
             Text(
-                feedItem.feedTitle,
-                style = MaterialTheme.typography.bodyLarge,
+                text = feedItem.feedTitle, style = FeedContentTypography.titleMedium,
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp)
                     .fillMaxWidth()
             )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
             Text(
-                //  text = feedItem.feedContent?.substring(0, 100)?.getHtmlFormattedString() ?: "",
-                text = if ((feedItem.feedContent?.length
-                        ?: 0) > 100
-                ) feedItem.feedContent?.substring(0, 100)!!.getHtmlFormattedString()
-                else feedItem.feedContent ?: "",
-                style = HomeTypography.displayMedium,
+                text = feedItem.feedContent?.substring(0, 100)?.getHtmlFormattedString() ?: "",
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                style = HomeTypography.titleSmall,
             )
         }
 
         Spacer(modifier = Modifier.height(10.dp))
+        Row(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp)
+                .fillMaxWidth()
+        ) {
+            Image(painter = painterResource(R.drawable.love), contentDescription = "")
+            Spacer(Modifier.width(15.dp))
+            Image(painter = painterResource(R.drawable.bell), contentDescription = "")
+            Spacer(Modifier.width(15.dp))
+            /*
+             Image(painter = painterResource(R.drawable.message), contentDescription = "")
+             Spacer(Modifier.width(10.dp))
+               BasicTextField(value = "",
+                 onValueChange = {},
+                 modifier = Modifier.fillMaxWidth(),
+                 decorationBox = {
+                     Text(text = "Write a note... ", style = HomeTypography.titleSmall)
+                 })*/
+        }
+        Spacer(modifier = Modifier.height(10.dp))
         HorizontalDivider(
             modifier = Modifier
                 .height(1.dp)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp), color = Color(0XFFE9ECF0)
         )
         Spacer(modifier = Modifier.height(20.dp))
     }

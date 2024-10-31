@@ -6,12 +6,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -23,7 +23,7 @@ fun BottomNavigationBar(navController: NavController) {
     )
     NavigationBar(
         containerColor = Color.Black.copy(alpha = 0.1f),
-        windowInsets = WindowInsets(bottom = 15.dp, top = 5.dp),
+        windowInsets = WindowInsets(bottom = 0.dp, top = 5.dp),
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
@@ -32,15 +32,16 @@ fun BottomNavigationBar(navController: NavController) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         screens.forEach { item ->
-            NavigationBarItem(selected = currentRoute == item.route,
+            NavigationBarItem(
+                selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true
                     }
                 },
-                icon = { Icon(item.icon, contentDescription = null) },
-                label = { Text(item.label) })
+                icon = { Icon(painterResource(id = item.iconResId), contentDescription = null) },
+            )
         }
     }
 }

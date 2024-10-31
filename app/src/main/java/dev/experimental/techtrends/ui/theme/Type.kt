@@ -7,9 +7,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.text.style.LineHeightStyle.Alignment
-import androidx.compose.ui.text.style.LineHeightStyle.Trim
 import androidx.compose.ui.unit.sp
 import dev.experimental.techtrends.R
 
@@ -35,27 +32,33 @@ val displayFontFamily = bodyFontFamily/*FontFamily(
 */
 val HomeTypography = Typography(
     titleMedium = TextStyle(
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.W500,
         fontSize = 12.sp,
         lineHeight = 18.sp,
         letterSpacing = 0.25.sp,
         fontFamily = displayFontFamily,
     ),
     titleSmall = TextStyle(
-        fontWeight = FontWeight.Light,
+        fontWeight = FontWeight.W300,
         fontSize = 10.sp,
         lineHeight = 14.sp,
         letterSpacing = 0.25.sp,
         fontFamily = displayFontFamily,
     ),
-    displayMedium = TextStyle(
-        fontWeight = FontWeight.Light,
+    labelSmall = TextStyle(
+        fontWeight = FontWeight.W100,
         fontSize = 12.sp,
-        lineHeight = 16.sp,
+        lineHeight = 10.sp,
         letterSpacing = 0.25.sp,
         fontFamily = displayFontFamily,
     ),
 )
+val tabTypography = Typography(
+    titleMedium = TextStyle(
+        fontWeight = FontWeight.W400, fontSize = 12.sp, lineHeight = 16.sp, letterSpacing = 0.25.sp
+    )
+)
+
 val AppTypography = Typography(
     displayLarge = TextStyle(
         fontWeight = FontWeight.Normal,
@@ -63,132 +66,21 @@ val AppTypography = Typography(
         lineHeight = 64.sp,
         letterSpacing = (-0.25).sp,
         fontFamily = displayFontFamily,
-    ),
-    displayMedium = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 45.sp,
-        lineHeight = 52.sp,
-        letterSpacing = 0.sp,
-        fontFamily = displayFontFamily,
-    ),
-    displaySmall = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 36.sp,
-        lineHeight = 44.sp,
-        letterSpacing = 0.sp,
-        fontFamily = displayFontFamily,
-    ),
-    headlineLarge = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 32.sp,
-        lineHeight = 40.sp,
-        letterSpacing = 0.sp,
-        fontFamily = displayFontFamily,
-    ),
-    headlineMedium = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 28.sp,
-        lineHeight = 36.sp,
-        letterSpacing = 0.sp,
-        fontFamily = displayFontFamily,
-    ),
-    headlineSmall = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 24.sp,
-        lineHeight = 32.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = LineHeightStyle(
-            alignment = Alignment.Bottom,
-            trim = Trim.None,
-        ),
-        fontFamily = displayFontFamily,
-    ),
-    titleLarge = TextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = LineHeightStyle(
-            alignment = Alignment.Bottom,
-            trim = Trim.LastLineBottom,
-        ),
-        fontFamily = displayFontFamily,
-    ),
+    )
+)
+val FeedContentTypography = Typography(
     titleMedium = TextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 18.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.1.sp,
-        fontFamily = displayFontFamily,
-    ),
-    titleSmall = TextStyle(
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.1.sp,
-        fontFamily = displayFontFamily,
-    ),
-    // Default text style
-    bodyLarge = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp,
-        lineHeightStyle = LineHeightStyle(
-            alignment = Alignment.Center,
-            trim = Trim.None,
-        ),
-        fontFamily = displayFontFamily,
-    ),
-    bodyMedium = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
+        fontWeight = FontWeight.W500,
+        fontSize = 12.sp,
+        lineHeight = 18.sp,
         letterSpacing = 0.25.sp,
         fontFamily = displayFontFamily,
-    ),
-    bodySmall = TextStyle(
-        fontWeight = FontWeight.Normal,
+    ), titleSmall = TextStyle(
+        fontWeight = FontWeight.W300,
         fontSize = 12.sp,
         lineHeight = 16.sp,
-        letterSpacing = 0.4.sp,
+        letterSpacing = 0.25.sp,
         fontFamily = displayFontFamily,
-    ),
-    // Used for Button
-    labelLarge = TextStyle(
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.1.sp,
-        lineHeightStyle = LineHeightStyle(
-            alignment = Alignment.Center,
-            trim = Trim.LastLineBottom,
-        ),
-        fontFamily = displayFontFamily,
-    ),
-    // Used for Navigation items
-    labelMedium = TextStyle(
-        fontWeight = FontWeight.Medium,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp,
-        lineHeightStyle = LineHeightStyle(
-            alignment = Alignment.Center,
-            trim = Trim.LastLineBottom,
-        ),
-        fontFamily = displayFontFamily,
-    ),
-    // Used for Tag
-    labelSmall = TextStyle(
-        fontWeight = FontWeight.Medium,
-        fontSize = 10.sp,
-        lineHeight = 14.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = LineHeightStyle(
-            alignment = Alignment.Center,
-            trim = Trim.LastLineBottom,
-        ),
-        fontFamily = displayFontFamily,
-    ),
+    )
 )
 

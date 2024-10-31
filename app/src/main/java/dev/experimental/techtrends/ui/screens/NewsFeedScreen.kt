@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.experimental.techtrends.ui.components.TabNewsFeed
 import dev.experimental.techtrends.ui.components.appBar
+import dev.experimental.techtrends.ui.theme.tabTypography
 import dev.experimental.techtrends.ui.viewmodels.NewsFeedViewModel
 import dev.experimental.techtrends.utils.CenteredProgressbar
 
@@ -61,7 +62,7 @@ fun NewsFeedContent() {
                         selected = selectedTabIndex == index,
                         onClick = { selectedTabIndex = index },
                         text = {
-                            Text(text = tabItem.name ?: "")
+                            Text(text = tabItem.name ?: "", style = tabTypography.titleMedium)
                         },
                     )
                 }
