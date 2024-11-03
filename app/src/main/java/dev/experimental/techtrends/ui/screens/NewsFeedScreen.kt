@@ -9,6 +9,7 @@ import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -38,7 +39,10 @@ fun NewsFeedScreen() {
 @Composable
 fun NewsFeedContent() {
     val viewModel = hiltViewModel<NewsFeedViewModel>()
-    viewModel.getAllCategoriesData()
+
+    LaunchedEffect(null) { viewModel.getAllCategoriesData() }
+
+
     val tabItem = viewModel.allCategoriesListByUser.collectAsState()
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 

@@ -2,9 +2,10 @@ package dev.experimental.techtrends.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.experimental.techtrends.core.MainRepository
 import dev.experimental.techtrends.models.custom.FavCompanyItem
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.experimental.techtrends.utils.toFavCompanyItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -15,26 +16,18 @@ import javax.inject.Inject
 class FavViewModel @Inject constructor(private val mainRepository: MainRepository) : ViewModel() {
     val favList = MutableStateFlow<List<FavCompanyItem>>(listOf())
 
-    fun getAllFeed() {
+
+    fun getAllFavFeeds() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val response = mainRepository.getAllFeedItem()
-                val tempFavList = mutableListOf<FavCompanyItem>()
-
-                response.groupBy { it.companyName }.forEach { (companyName, companyList) ->
-                    companyList.firstOrNull()?.let { company ->
-                        tempFavList.add(
-                            FavCompanyItem(
-                                companyName = companyName,
-                                companyDesc = company.companyDescription,
-                                articleCount = companyList.size.toString(),
-                                companyLogo = company.companyLogoUrl
-                            )
-                        )
-                    }
+                val tempList = arrayListOf<FavCompanyItem>()
+                mainRepository.getAllFavFeeds("user1").forEach { feedItem ->
+                    tempList.add(feedItem.toFavCompanyItem())
                 }
-                favList.emit(tempFavList)
+                favList.emit(tempList)
             }
         }
     }
 }
+
+

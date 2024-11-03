@@ -3,6 +3,7 @@ package dev.experimental.techtrends.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -30,6 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import dev.experimental.techtrends.R
@@ -37,6 +38,7 @@ import dev.experimental.techtrends.models.FeedItem
 import dev.experimental.techtrends.ui.screens.NewsBottomSheet
 import dev.experimental.techtrends.ui.theme.FeedContentTypography
 import dev.experimental.techtrends.ui.theme.HomeTypography
+import dev.experimental.techtrends.ui.viewmodels.NewsFeedViewModel
 import dev.experimental.techtrends.utils.getHtmlFormattedString
 import kotlinx.coroutines.launch
 
@@ -55,6 +57,8 @@ fun FeedContentItem(
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val coroutineScope = rememberCoroutineScope()
     val clickState = remember { mutableStateOf(false) }
+    val viewModel = hiltViewModel<NewsFeedViewModel>()
+
     Column {
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(16.dp))
@@ -135,9 +139,22 @@ fun FeedContentItem(
                 .padding(start = 16.dp, end = 16.dp)
                 .fillMaxWidth()
         ) {
-            Image(painter = painterResource(R.drawable.love), contentDescription = "")
-            Spacer(Modifier.width(15.dp))
-            Image(painter = painterResource(R.drawable.bell), contentDescription = "")
+            Image(painter = painterResource(
+                if (feedItem.isFav == "user1") R.drawable.lovefill else R.drawable.love
+            ), contentDescription = "", modifier = Modifier.clickable(
+                interactionSource = remember { MutableInteractionSource() }, indication = null
+            ) {
+                viewModel.setFeedAsFav(id = feedItem.id, feedCategory = feedItem.categoryName)
+            })
+            Spacer(Modifier.width(20.dp))
+            Image(painter = painterResource(
+                if (feedItem.isAlertOn == "user1") R.drawable.bellfill else R.drawable.bell
+            ), contentDescription = "", modifier = Modifier.clickable(
+                interactionSource = remember { MutableInteractionSource() }, indication = null
+            ) {
+
+                viewModel.setFeedAlert(id = feedItem.id, feedCategory = feedItem.categoryName)
+            })
             Spacer(Modifier.width(15.dp))
             /*
              Image(painter = painterResource(R.drawable.message), contentDescription = "")

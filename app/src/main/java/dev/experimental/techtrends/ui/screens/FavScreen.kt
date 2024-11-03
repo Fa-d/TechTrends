@@ -26,7 +26,7 @@ fun FavScreen() {
     val itemList = viewmodel.favList.collectAsState()
 
     LaunchedEffect(null) {
-        viewmodel.getAllFeed()
+        viewmodel.getAllFavFeeds()
     }
     if (itemList.value.isEmpty()) {
         CenteredProgressbar()

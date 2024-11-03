@@ -1,11 +1,12 @@
 package dev.experimental.techtrends.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.experimental.techtrends.core.MainRepository
 import dev.experimental.techtrends.models.CategoryModel
 import dev.experimental.techtrends.models.FeedItem
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -18,15 +19,12 @@ class NewsFeedViewModel @Inject constructor(private val mainRepository: MainRepo
     var allCategoriesListByUser = MutableStateFlow<List<CategoryModel>>(listOf())
     var feedItemByCategory = MutableStateFlow<List<FeedItem>>(listOf())
 
-    fun getAllCategoriesData() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                mainRepository.getAllCategoriesDB().collect { dataFromRoom ->
-                    if (dataFromRoom.isNotEmpty()) {
-                        val filteredList = dataFromRoom.filter { it.selectedByUser == "user1" }
-                        allCategoriesListByUser.emit(filteredList)
-                    }
-                }
+    suspend fun getAllCategoriesData() {
+        mainRepository.getAllCategoriesDB().collect { dataFromRoom ->
+            if (dataFromRoom.isNotEmpty()) {
+                val filteredList = dataFromRoom.filter { it.selectedByUser == "user1" }
+                allCategoriesListByUser.emit(filteredList)
+                Log.e("getAllCategoriesData", "dataChanged")
             }
         }
     }
@@ -60,6 +58,24 @@ class NewsFeedViewModel @Inject constructor(private val mainRepository: MainRepo
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 mainRepository.removeCategoryFromSelected(categoryName)
+            }
+        }
+    }
+
+    fun setFeedAsFav(user: String = "user1", id: Int, feedCategory: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                mainRepository.setFeedAsFav(user, id)
+                getAllFeedByCategory(feedCategory)
+            }
+        }
+    }
+
+    fun setFeedAlert(user: String = "user1", id: Int, feedCategory: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                mainRepository.setFeedAlert(user, id)
+                getAllFeedByCategory(feedCategory)
             }
         }
     }

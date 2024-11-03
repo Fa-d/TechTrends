@@ -15,6 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
+import dev.experimental.techtrends.models.FeedItem
+import dev.experimental.techtrends.models.custom.FavCompanyItem
 
 
 fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
@@ -52,3 +54,13 @@ val LocalNavController = staticCompositionLocalOf<NavController> {
 fun String.getHtmlFormattedString() =
     HtmlCompat.fromHtml(this@getHtmlFormattedString, HtmlCompat.FROM_HTML_MODE_COMPACT)
         .toAnnotatedString().toString()
+
+
+fun FeedItem.toFavCompanyItem(): FavCompanyItem {
+    return FavCompanyItem(
+        companyName = companyName,
+        companyDesc = companyDescription,
+        articleTitle = feedTitle,
+        companyLogo = companyLogoUrl
+    )
+}

@@ -29,5 +29,13 @@ class MainRepository @Inject constructor(
 
     suspend fun setCompanyFav(id: Int) = mainDatabase.feedDao().setCompanyFav(id)
     suspend fun setArticleLater(id: Int) = mainDatabase.feedDao().setArticleLater(id)
+    suspend fun setFeedAsFav(isFav: String, id: Int) =
+        mainDatabase.feedDao().setFeedAsFav(isFav, id)
+
+    suspend fun setFeedAlert(isAlertOn: String, id: Int) =
+        mainDatabase.feedDao().setFeedAlert(isAlertOn, id)
+
+    suspend fun getAllFavFeeds(userName: String) =
+        mainDatabase.feedDao().getAllFavFeeds(userName)
 
 }

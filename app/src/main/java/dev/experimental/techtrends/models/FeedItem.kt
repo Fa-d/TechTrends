@@ -4,7 +4,6 @@ package dev.experimental.techtrends.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.Serializable
 
 @Entity(tableName = "feed_table")
 data class FeedItem(
@@ -23,5 +22,6 @@ data class FeedItem(
     @SerializedName("feed_image") var feedImage: String = "",
     @SerializedName("feed_title") var feedTitle: String = "",
     @SerializedName("isFav") var isFav: String? = "",
-    @SerializedName("isSavedForLater") var isSavedForLater: String? = ""
+    @SerializedName("isSavedForLater") var isSavedForLater: String? = "",
+    @SerializedName("isAlertOn") var isAlertOn: String? = ""
 )

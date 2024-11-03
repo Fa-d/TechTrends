@@ -60,7 +60,7 @@ fun CompanyUI(favCompanyItem: FavCompanyItem) {
                         .align(Alignment.Start)
                 )
                 Text(
-                    favCompanyItem.articleCount + " Articles",
+                    " Articles",
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
                         .fillMaxWidth()

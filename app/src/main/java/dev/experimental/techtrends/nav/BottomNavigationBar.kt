@@ -19,11 +19,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val screens = listOf(
-        BottomNavItem.NEWSFEED, BottomNavItem.FAV, BottomNavItem.SAVED, BottomNavItem.PROFILE
+        BottomNavItem.FAV,   BottomNavItem.NEWSFEED,  BottomNavItem.SAVED, BottomNavItem.PROFILE
     )
     NavigationBar(
-        containerColor = Color.Black.copy(alpha = 0.1f),
-        windowInsets = WindowInsets(bottom = 0.dp, top = 5.dp),
+     //   containerColor = Color.Black.copy(alpha = 0.1f),
+        windowInsets = WindowInsets(bottom = 0.dp, top = 0.dp),
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))

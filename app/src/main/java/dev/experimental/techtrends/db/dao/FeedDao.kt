@@ -23,4 +23,14 @@ interface FeedDao {
     @Query("UPDATE feed_table SET isSavedForLater = :userName WHERE id = :id")
     suspend fun setArticleLater(id: Int, userName: String = "user1")
 
+    @Query("UPDATE feed_table SET isFav = CASE WHEN LENGTH(isFav) > 0 THEN '' ELSE :isFav END WHERE id = :id")
+    suspend fun setFeedAsFav(isFav: String, id: Int)
+
+
+    @Query("UPDATE feed_table SET isAlertOn = CASE WHEN LENGTH(isFav) > 0 THEN '' ELSE :isAlertOn END WHERE id = :id")
+    suspend fun setFeedAlert(isAlertOn: String, id: Int)
+
+    @Query("SELECT * FROM feed_table WHERE isFav = :userName")
+    suspend fun getAllFavFeeds(userName: String = "user1"): List<FeedItem>
+
 }
