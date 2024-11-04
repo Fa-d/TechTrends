@@ -1,19 +1,20 @@
 package dev.experimental.techtrends.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import dev.experimental.techtrends.ui.components.CompanyUI
+import dev.experimental.techtrends.ui.components.FavCategoryItem
+import dev.experimental.techtrends.ui.components.FavSourcesItem
 import dev.experimental.techtrends.ui.components.appBar
 import dev.experimental.techtrends.ui.viewmodels.FavViewModel
 import dev.experimental.techtrends.utils.CenteredProgressbar
@@ -21,9 +22,9 @@ import dev.experimental.techtrends.utils.CenteredProgressbar
 
 @Composable
 fun FavScreen() {
-    val state = rememberLazyStaggeredGridState()
     val viewmodel = hiltViewModel<FavViewModel>()
     val itemList = viewmodel.favList.collectAsState()
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(null) {
         viewmodel.getAllFavFeeds()
@@ -32,23 +33,19 @@ fun FavScreen() {
         CenteredProgressbar()
     }
     Column {
-        appBar()
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(1),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 10.dp),
-            state = state,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            if (itemList.value.isNotEmpty()) {
-                itemList.value.forEach {
-                    item {
-                        CompanyUI(it)
-                    }
+        appBar(showSearch = false)
+        TabRow(selectedTabIndex = selectedTabIndex, tabs = {
+            Tab(selected = true, onClick = { selectedTabIndex = 0 }, text = { Text("Categories") })
+            Tab(selected = true, onClick = { selectedTabIndex = 1 }, text = { Text("Sources") })
+        })
+        LazyColumn {
+            items(itemList.value.size) { index ->
+                if (selectedTabIndex == 0) {
+                    FavCategoryItem()
+                } else if (selectedTabIndex == 1) {
+                    FavSourcesItem(itemList.value[index])
                 }
             }
         }
-
     }
 }

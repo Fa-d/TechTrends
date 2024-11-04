@@ -27,10 +27,10 @@ android {
 
     defaultConfig {
         applicationId = "dev.experimental.techtrends"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = Integer.parseInt(appVersionCode)
-        versionName = "${appVersionName}"
+        versionName = appVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -170,6 +170,7 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose:3.0.0-rc01")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0-rc01")
 
+    implementation("androidx.compose.material:material:1.8.0-alpha05")
 
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.hilt.work)

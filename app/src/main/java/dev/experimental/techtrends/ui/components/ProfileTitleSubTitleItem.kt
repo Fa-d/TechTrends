@@ -22,15 +22,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-data class PSTItemData(
+data class ProfileTitleSubTitleData(
     val icon: ImageVector, val title: String, val subtitle: String
 )
 
 
 @Composable
 @Preview(showBackground = true)
-fun PSTItem(
-    pSTItemData: PSTItemData = PSTItemData(
+fun ProfileTitleSubTitleItem(
+    profileTitleSubTitleData: ProfileTitleSubTitleData = ProfileTitleSubTitleData(
         icon = Icons.Filled.AccountCircle, title = "Accounts", subtitle = "Your Logged In Accounts"
     ), onClick: () -> Unit = {}
 ) {
@@ -44,7 +44,7 @@ fun PSTItem(
                 .padding(vertical = 15.dp, horizontal = 20.dp)
         ) {
             Icon(
-                imageVector = pSTItemData.icon,
+                imageVector = profileTitleSubTitleData.icon,
                 contentDescription = "",
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
@@ -52,11 +52,12 @@ fun PSTItem(
             )
             Spacer(modifier = Modifier.width(15.dp))
             Column {
-                Text(pSTItemData.title, style = MaterialTheme.typography.bodyMedium)
-                if (pSTItemData.subtitle.isNotEmpty()) {
+                Text(profileTitleSubTitleData.title, style = MaterialTheme.typography.bodyMedium)
+                if (profileTitleSubTitleData.subtitle.isNotEmpty()) {
                     Spacer(Modifier.height(5.dp))
                     Text(
-                        pSTItemData.subtitle, style = MaterialTheme.typography.labelMedium
+                        profileTitleSubTitleData.subtitle,
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
             }

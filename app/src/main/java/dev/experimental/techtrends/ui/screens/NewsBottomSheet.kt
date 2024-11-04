@@ -10,8 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.experimental.techtrends.R
 import dev.experimental.techtrends.models.FeedItem
-import dev.experimental.techtrends.ui.components.PSTItem
-import dev.experimental.techtrends.ui.components.PSTItemData
+import dev.experimental.techtrends.ui.components.ProfileTitleSubTitleItem
+import dev.experimental.techtrends.ui.components.ProfileTitleSubTitleData
 import dev.experimental.techtrends.ui.viewmodels.NewsFeedViewModel
 
 @Composable
@@ -19,8 +19,8 @@ import dev.experimental.techtrends.ui.viewmodels.NewsFeedViewModel
 fun NewsBottomSheet(feedItem: FeedItem = FeedItem(id = 0), onDismissed: () -> Unit = {}) {
     val viewModel = hiltViewModel<NewsFeedViewModel>()
     Column {
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = ImageVector.vectorResource(id = R.drawable.save),
                 title = "Save to read later",
                 subtitle = ""
@@ -29,16 +29,16 @@ fun NewsBottomSheet(feedItem: FeedItem = FeedItem(id = 0), onDismissed: () -> Un
                 onDismissed.invoke()
             }
         )
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = Icons.Outlined.Share, title = "Share via", subtitle = ""
             ), onClick = {
                 onDismissed()
             }
         )
 
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = ImageVector.vectorResource(id = R.drawable.message),
                 title = "View ${feedItem.companyName} Posts",
                 subtitle = ""
@@ -48,8 +48,8 @@ fun NewsBottomSheet(feedItem: FeedItem = FeedItem(id = 0), onDismissed: () -> Un
             }
         )
 
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = ImageVector.vectorResource(id = R.drawable.cross_round),
                 title = "Unfollow ${feedItem.companyName}",
                 subtitle = ""

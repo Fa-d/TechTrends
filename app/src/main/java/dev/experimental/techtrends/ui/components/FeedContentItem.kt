@@ -41,6 +41,11 @@ import dev.experimental.techtrends.ui.theme.HomeTypography
 import dev.experimental.techtrends.ui.viewmodels.NewsFeedViewModel
 import dev.experimental.techtrends.utils.getHtmlFormattedString
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,7 +83,9 @@ fun FeedContentItem(
             Column {
                 Text(feedItem.companyName, style = HomeTypography.titleMedium)
                 Spacer(modifier = Modifier.height(5.dp))
-                Text(feedItem.datePosted, style = HomeTypography.titleSmall)
+                Text(
+                    formatDateRelative(feedItem.datePosted), style = HomeTypography.titleSmall
+                )
             }
             Spacer(modifier = Modifier.weight(1f))
             Image(
@@ -152,7 +159,6 @@ fun FeedContentItem(
             ), contentDescription = "", modifier = Modifier.clickable(
                 interactionSource = remember { MutableInteractionSource() }, indication = null
             ) {
-
                 viewModel.setFeedAlert(id = feedItem.id, feedCategory = feedItem.categoryName)
             })
             Spacer(Modifier.width(15.dp))
@@ -173,5 +179,29 @@ fun FeedContentItem(
                 .padding(horizontal = 16.dp), color = Color(0XFFE9ECF0)
         )
         Spacer(modifier = Modifier.height(20.dp))
+    }
+}
+
+fun formatDateRelative(iso8601String: String): String {
+    val instant = Instant.parse(iso8601String)
+    val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+    val now = LocalDateTime.now()
+    val diffInDays = ChronoUnit.DAYS.between(localDateTime, now)
+    val diffInWeeks = ChronoUnit.WEEKS.between(localDateTime, now)
+    val diffInMonths = ChronoUnit.MONTHS.between(localDateTime, now)
+    val diffInYears = ChronoUnit.YEARS.between(localDateTime, now)
+
+    val formatter = DateTimeFormatter.ofPattern("hh:mm a")
+
+    return when {
+        diffInYears >= 2 -> "${formatter.format(localDateTime)}  2 years ago"
+        diffInYears.toInt() == 1 -> "${formatter.format(localDateTime)}  1 year ago"
+        diffInMonths >= 3 -> "${formatter.format(localDateTime)}  3 months ago"
+        diffInMonths >= 1 -> "${formatter.format(localDateTime)}  1 month ago"
+        diffInWeeks >= 4 -> "${formatter.format(localDateTime)}  4 weeks ago"
+        diffInWeeks >= 1 -> "${formatter.format(localDateTime)}  1 week ago"
+        diffInDays >= 2 -> "${formatter.format(localDateTime)}  ${diffInDays} days ago"
+        diffInDays.toInt() == 1 -> "${formatter.format(localDateTime)}  Yesterday"
+        else -> "${formatter.format(localDateTime)}  Today"
     }
 }

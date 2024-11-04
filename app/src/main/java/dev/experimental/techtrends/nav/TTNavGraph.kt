@@ -54,7 +54,7 @@ fun RMNavGraph(
         }
         composable(TOPIC_SELECT_SCREEN) {
             if (minimumTopic.value) {
-                currentNav.navigate(NEWSFEED_SCREEN) { launchSingleTop = true }
+                currentNav.navigate(FAV_SCREEN) { launchSingleTop = true }
             } else {
                 TopicSelectScreen()
                 BackHandler {

@@ -17,6 +17,7 @@ import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 import dev.experimental.techtrends.models.FeedItem
 import dev.experimental.techtrends.models.custom.FavCompanyItem
+import dev.experimental.techtrends.ui.viewmodels.SavedItem
 
 
 fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
@@ -63,4 +64,17 @@ fun FeedItem.toFavCompanyItem(): FavCompanyItem {
         articleTitle = feedTitle,
         companyLogo = companyLogoUrl
     )
+}
+
+fun List<FeedItem>.toSavedItemList(): List<SavedItem> {
+    return map { feedItem ->
+        SavedItem(
+            id = feedItem.id,
+            companyName = feedItem.companyName,
+            articleTitle = feedItem.feedTitle,
+            content = feedItem.feedContent ?: "",
+            companyLogo = feedItem.companyLogoUrl,
+            authorName = feedItem.feedAuthor
+        )
+    }
 }

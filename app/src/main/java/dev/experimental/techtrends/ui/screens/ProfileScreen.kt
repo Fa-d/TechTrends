@@ -20,8 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.experimental.techtrends.ui.components.PSTItem
-import dev.experimental.techtrends.ui.components.PSTItemData
+import dev.experimental.techtrends.ui.components.ProfileTitleSubTitleItem
+import dev.experimental.techtrends.ui.components.ProfileTitleSubTitleData
 import dev.experimental.techtrends.ui.components.appBar
 
 
@@ -37,56 +37,56 @@ fun ProfileScreen() {
             modifier = Modifier.padding(start = 20.dp)
         )
         Spacer(modifier = Modifier.height(40.dp))
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = Icons.Outlined.AccountCircle,
                 title = "Accounts",
                 subtitle = "Your Logged In Accounts"
             )
         )
 
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = Icons.Outlined.Edit,
                 title = "Languages",
                 subtitle = "English, Spanish, French, German and more.."
             )
         )
 
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = Icons.Outlined.FavoriteBorder,
                 title = "Interested Topics",
                 subtitle = "Add/Remove your favorite topics."
             )
         )
 
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = Icons.Outlined.Star,
                 title = "Send FeedBack",
                 subtitle = "Help Us Improve suggesting feedback about app."
             )
         )
 
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = Icons.Outlined.Share,
                 title = "Share",
                 subtitle = "Let your friends know about this app"
             )
         )
 
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = Icons.Outlined.Refresh,
                 title = "History",
                 subtitle = "Check you recent read articles"
             )
         )
 
-        PSTItem(
-            PSTItemData(
+        ProfileTitleSubTitleItem(
+            ProfileTitleSubTitleData(
                 icon = Icons.Outlined.ExitToApp, title = "Logout", subtitle = ""
             )
         )

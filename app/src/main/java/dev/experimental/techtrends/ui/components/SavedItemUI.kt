@@ -19,10 +19,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import dev.experimental.techtrends.models.custom.FavCompanyItem
+import dev.experimental.techtrends.ui.viewmodels.SavedItem
 
 @Composable
-fun CompanyUI(favCompanyItem: FavCompanyItem) {
+fun SavedItemUI(savedItem: SavedItem) {
     Card(
         modifier = Modifier
             .wrapContentHeight()
@@ -31,7 +31,7 @@ fun CompanyUI(favCompanyItem: FavCompanyItem) {
     ) {
         Box() {
             AsyncImage(
-                model = favCompanyItem.companyLogo,
+                model = savedItem.companyLogo,
                 contentDescription = "",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
@@ -44,15 +44,7 @@ fun CompanyUI(favCompanyItem: FavCompanyItem) {
             )
             Column(modifier = Modifier.padding(20.dp)) {
                 Text(
-                    favCompanyItem.companyName,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 15.dp)
-                        .align(Alignment.Start)
-                )
-                Text(
-                    favCompanyItem.companyDesc,
+                    savedItem.articleTitle,
                     style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -60,7 +52,15 @@ fun CompanyUI(favCompanyItem: FavCompanyItem) {
                         .align(Alignment.Start)
                 )
                 Text(
-                    " Articles",
+                    savedItem.companyName,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 15.dp)
+                        .align(Alignment.Start)
+                )
+                Text(
+                    "By ${savedItem.authorName}",
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
                         .fillMaxWidth()
