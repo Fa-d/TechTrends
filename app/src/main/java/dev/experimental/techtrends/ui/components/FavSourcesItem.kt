@@ -2,6 +2,7 @@ package dev.experimental.techtrends.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,12 +31,13 @@ import dev.experimental.techtrends.ui.theme.FavSourceTypography
 @Preview(showBackground = true)
 fun FavSourcesItem(
     favCompanyItem: FavCompanyItem = FavCompanyItem(
+        itemId = 0,
         companyDesc = "a random desc",
         companyName = "Google",
         articleTitle = "",
         companyLogo = "",
         articleShortDesc = ""
-    )
+    ), onFavClicked: () -> Unit = {}
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Spacer(Modifier.height(10.dp))
@@ -62,7 +64,9 @@ fun FavSourcesItem(
             Image(
                 painter = painterResource(R.drawable.lovefill),
                 contentDescription = "",
-                modifier = Modifier.weight(.06f)
+                modifier = Modifier
+                    .weight(.06f)
+                    .clickable { onFavClicked() }
             )
         }
 

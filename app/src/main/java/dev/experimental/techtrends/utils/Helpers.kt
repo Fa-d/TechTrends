@@ -59,6 +59,7 @@ fun String.getHtmlFormattedString() =
 
 fun FeedItem.toFavCompanyItem(): FavCompanyItem {
     return FavCompanyItem(
+        itemId = id,
         companyName = companyName,
         companyDesc = companyDescription,
         articleTitle = feedTitle,

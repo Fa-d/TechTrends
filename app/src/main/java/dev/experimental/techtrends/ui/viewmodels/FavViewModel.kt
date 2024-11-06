@@ -20,11 +20,18 @@ class FavViewModel @Inject constructor(private val mainRepository: MainRepositor
     fun getAllFavFeeds() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val tempList = arrayListOf<FavCompanyItem>()
-                mainRepository.getAllFavFeeds("user1").forEach { feedItem ->
-                    tempList.add(feedItem.toFavCompanyItem())
-                }
-                favList.emit(tempList)
+                val getAllFormattedFavs = mainRepository.getAllFavFeeds("user1")
+                    .map { feedItem -> feedItem.toFavCompanyItem() }
+                favList.emit(getAllFormattedFavs)
+            }
+        }
+    }
+
+    fun removeItemFromFav(id: Int, user: String = "user1") {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                mainRepository.setFeedAsFav(user, id)
+                getAllFavFeeds()
             }
         }
     }

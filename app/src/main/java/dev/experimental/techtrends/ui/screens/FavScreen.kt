@@ -12,10 +12,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.experimental.techtrends.ui.components.FavCategoryItem
 import dev.experimental.techtrends.ui.components.FavSourcesItem
 import dev.experimental.techtrends.ui.components.appBar
+import dev.experimental.techtrends.ui.theme.tabTypography
 import dev.experimental.techtrends.ui.viewmodels.FavViewModel
 import dev.experimental.techtrends.utils.CenteredProgressbar
 
@@ -34,16 +36,31 @@ fun FavScreen() {
     }
     Column {
         appBar(showSearch = false)
-        TabRow(selectedTabIndex = selectedTabIndex, tabs = {
-            Tab(selected = true, onClick = { selectedTabIndex = 0 }, text = { Text("Categories") })
-            Tab(selected = true, onClick = { selectedTabIndex = 1 }, text = { Text("Sources") })
+        TabRow(
+            selectedTabIndex = selectedTabIndex, contentColor = Color.Gray, tabs = {
+                Tab(selected = true,
+                    onClick = { selectedTabIndex = 0 },
+                    text = { Text("Categories", style = tabTypography.titleMedium) })
+                Tab(selected = true,
+                    onClick = { selectedTabIndex = 1 },
+                    text = { Text("Sources", style = tabTypography.titleMedium) })
         })
         LazyColumn {
             items(itemList.value.size) { index ->
                 if (selectedTabIndex == 0) {
-                    FavCategoryItem(itemList.value[index])
+                    FavCategoryItem(
+                        itemList.value[index],
+                        onFavClicked = {
+                            viewmodel.removeItemFromFav(id = itemList.value[index].itemId)
+                        },
+                    )
                 } else if (selectedTabIndex == 1) {
-                    FavSourcesItem(itemList.value[index])
+                    FavSourcesItem(
+                        itemList.value[index],
+                        onFavClicked = {
+                            viewmodel.removeItemFromFav(id = itemList.value[index].itemId)
+                        },
+                    )
                 }
             }
         }
