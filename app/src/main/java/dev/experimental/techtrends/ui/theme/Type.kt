@@ -84,3 +84,19 @@ val FeedContentTypography = Typography(
     )
 )
 
+
+val FavSourceTypography = Typography(
+    titleMedium = TextStyle(
+        fontWeight = FontWeight.W500, fontSize = 12.sp, lineHeight = 18.sp, letterSpacing = 0.25.sp
+    ), labelSmall = TextStyle(
+        fontWeight = FontWeight.W300, fontSize = 10.sp, lineHeight = 14.sp, letterSpacing = 0.25.sp
+    )
+)
+
+val FavCategoryTypography = Typography(
+    labelSmall = TextStyle(
+        fontWeight = FontWeight.W300, fontSize = 12.sp, lineHeight = 16.sp, letterSpacing = 0.25.sp
+    )
+)
+
+

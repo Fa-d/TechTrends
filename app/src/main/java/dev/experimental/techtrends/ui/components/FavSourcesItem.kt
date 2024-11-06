@@ -24,20 +24,23 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import dev.experimental.techtrends.R
 import dev.experimental.techtrends.models.custom.FavCompanyItem
+import dev.experimental.techtrends.ui.theme.FavSourceTypography
 
 @Composable
 @Preview(showBackground = true)
 fun FavSourcesItem(
     favCompanyItem: FavCompanyItem = FavCompanyItem(
-        companyDesc = "a random desc", companyName = "Google", articleTitle = "", companyLogo = ""
+        companyDesc = "a random desc",
+        companyName = "Google",
+        articleTitle = "",
+        companyLogo = "",
+        articleShortDesc = ""
     )
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Spacer(Modifier.height(10.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             AsyncImage(
                 model = favCompanyItem.companyLogo,
                 contentDescription = null,
@@ -49,18 +52,22 @@ fun FavSourcesItem(
                     .background(Color.LightGray)
             )
             Spacer(Modifier.width(10.dp))
-            Text(favCompanyItem.companyName)
-            Spacer(Modifier.weight(1f))
-            Image(painter = painterResource(R.drawable.lovefill), contentDescription = "")
-
+            Column(modifier = Modifier.weight(.9f)) {
+                Text(favCompanyItem.companyName, style = FavSourceTypography.titleMedium)
+                Spacer(Modifier.height(5.dp))
+                Text(
+                    text = favCompanyItem.companyDesc, style = FavSourceTypography.labelSmall
+                )
+            }
+            Image(
+                painter = painterResource(R.drawable.lovefill),
+                contentDescription = "",
+                modifier = Modifier.weight(.06f)
+            )
         }
-        Spacer(Modifier.height(10.dp))
-        Text(favCompanyItem.companyDesc)
-        Spacer(Modifier.height(10.dp))
-        HorizontalDivider(
-            modifier = Modifier.height(1.dp), color = Color(0XFFE9ECF0)
-        )
-        Spacer(Modifier.height(10.dp))
 
+        Spacer(Modifier.height(10.dp))
+        HorizontalDivider(modifier = Modifier.height(1.dp), color = Color(0XFFE9ECF0))
+        Spacer(Modifier.height(10.dp))
     }
 }

@@ -62,7 +62,8 @@ fun FeedItem.toFavCompanyItem(): FavCompanyItem {
         companyName = companyName,
         companyDesc = companyDescription,
         articleTitle = feedTitle,
-        companyLogo = companyLogoUrl
+        companyLogo = companyLogoUrl,
+        articleShortDesc = (feedContent ?: "").getHtmlFormattedString()
     )
 }
 

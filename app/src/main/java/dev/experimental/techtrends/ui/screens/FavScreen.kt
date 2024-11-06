@@ -41,7 +41,7 @@ fun FavScreen() {
         LazyColumn {
             items(itemList.value.size) { index ->
                 if (selectedTabIndex == 0) {
-                    FavCategoryItem()
+                    FavCategoryItem(itemList.value[index])
                 } else if (selectedTabIndex == 1) {
                     FavSourcesItem(itemList.value[index])
                 }

@@ -4,6 +4,7 @@ object NavScreens {
     const val SPLASH_SCREEN = "splash"
     const val WELCOME_SCREEN = "welcome"
     const val TOPIC_SELECT_SCREEN = "topic_select"
+    const val TOPIC_RESELECT_SCREEN = "topic_reselect"
     const val NEWSFEED_SCREEN = "newsfeed"
     const val FAV_SCREEN = "fav"
     const val SAVED_SCREEN = "saved"

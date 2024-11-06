@@ -14,6 +14,7 @@ import dev.experimental.techtrends.nav.NavScreens.NEWS_DETAILS_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.PROFILE_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.SAVED_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.SPLASH_SCREEN
+import dev.experimental.techtrends.nav.NavScreens.TOPIC_RESELECT_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.TOPIC_SELECT_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.WELCOME_SCREEN
 import dev.experimental.techtrends.ui.screens.FavScreen
@@ -62,6 +63,9 @@ fun RMNavGraph(
                 }
             }
 
+        }
+        composable(TOPIC_RESELECT_SCREEN) {
+            TopicSelectScreen()
         }
         composable(NEWSFEED_SCREEN) {
             NewsFeedScreen()

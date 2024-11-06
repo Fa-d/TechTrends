@@ -20,14 +20,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.experimental.techtrends.ui.components.ProfileTitleSubTitleItem
+import dev.experimental.techtrends.nav.NavScreens.TOPIC_RESELECT_SCREEN
 import dev.experimental.techtrends.ui.components.ProfileTitleSubTitleData
+import dev.experimental.techtrends.ui.components.ProfileTitleSubTitleItem
 import dev.experimental.techtrends.ui.components.appBar
+import dev.experimental.techtrends.utils.LocalNavController
 
 
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreen() {
+    val currentNav = LocalNavController.current
+
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         appBar(false)
         Spacer(modifier = Modifier.height(40.dp))
@@ -58,7 +62,9 @@ fun ProfileScreen() {
                 icon = Icons.Outlined.FavoriteBorder,
                 title = "Interested Topics",
                 subtitle = "Add/Remove your favorite topics."
-            )
+            ), onClick = {
+                currentNav.navigate(TOPIC_RESELECT_SCREEN)
+            }
         )
 
         ProfileTitleSubTitleItem(
