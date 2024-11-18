@@ -93,9 +93,9 @@ android {
         variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
             .forEach { output ->
                 val outputFileName = if (output.outputFileName.endsWith(".aab")) {
-                    "Tech Trends - ${variant.baseName} - ${variant.versionName} ${variant.versionCode}.aab"
+                    "Tech Trends-${variant.baseName} - ${variant.versionName} ${variant.versionCode}.aab"
                 } else {
-                    "Tech Trends-${variant.baseName}-${variant.versionName}.apk"
+                    "TechTrends-${variant.baseName}-${variant.versionName}.apk"
                 }
                 output.outputFileName = outputFileName
             }
