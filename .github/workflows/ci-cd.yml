@@ -36,7 +36,11 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build debug APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: |
+          echo "baseUrl=${{ secrets.BASE_URL }}" > local.properties
+          echo "appVersionCode=${{ secrets.APP_VERSION_CODE }}" >> local.properties
+          echo "appVersionName=${{ secrets.APP_VERSION_NAME }}" >> local.properties
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
