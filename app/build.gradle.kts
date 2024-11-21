@@ -168,7 +168,7 @@ dependencies {
     implementation(libs.lottie.compose)
 
     implementation("io.coil-kt.coil3:coil-compose:3.0.0-rc01")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0-rc01")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.3")
 
     implementation("androidx.compose.material:material:1.8.0-alpha05")
 
