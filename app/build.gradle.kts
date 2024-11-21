@@ -170,7 +170,7 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose:3.0.0-rc01")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.3")
 
-    implementation("androidx.compose.material:material:1.8.0-alpha05")
+    implementation("androidx.compose.material:material:1.8.0-alpha06")
 
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.hilt.work)
