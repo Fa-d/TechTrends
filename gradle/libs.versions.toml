@@ -1,7 +1,7 @@
 [versions]
 agp = "8.7.2"
 hiltNavigationCompose = "1.2.0"
-kotlin = "2.0.20"
+kotlin = "2.0.21"
 coreKtx = "1.13.1"
 hiltAndroid = "2.52"
 lifecycleRuntimeKtx = "2.8.6"
