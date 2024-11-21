@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.ExitToApp
@@ -93,7 +94,7 @@ fun ProfileScreen() {
 
         ProfileTitleSubTitleItem(
             ProfileTitleSubTitleData(
-                icon = Icons.Outlined.ExitToApp, title = "Logout", subtitle = ""
+                icon = Icons.Filled.Close, title = "Logout", subtitle = ""
             )
         )
     }
