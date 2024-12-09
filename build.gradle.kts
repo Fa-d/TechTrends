@@ -7,5 +7,5 @@ plugins {
     id("androidx.room").version("2.6.1").apply(false)
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.compose.compiler) apply false
-    id("com.autonomousapps.dependency-analysis") version "2.4.2"
+    id("com.autonomousapps.dependency-analysis") version "2.6.0"
 }
