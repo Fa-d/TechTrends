@@ -1,7 +1,7 @@
 [versions]
 agp = "8.7.3"
 coilCompose = "3.1.0"
-coilNetworkOkhttp = "3.0.3"
+coilNetworkOkhttp = "3.1.0"
 converterGson = "2.11.0"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.1.0"
