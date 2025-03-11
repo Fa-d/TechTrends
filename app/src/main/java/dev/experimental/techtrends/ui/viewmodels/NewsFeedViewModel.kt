@@ -24,7 +24,6 @@ class NewsFeedViewModel @Inject constructor(private val mainRepository: MainRepo
             if (dataFromRoom.isNotEmpty()) {
                 val filteredList = dataFromRoom.filter { it.selectedByUser == "user1" }
                 allCategoriesListByUser.emit(filteredList)
-                Log.e("getAllCategoriesData", "dataChanged")
             }
         }
     }

@@ -14,15 +14,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavViewModel @Inject constructor(private val mainRepository: MainRepository) : ViewModel() {
-    val favList = MutableStateFlow<List<FavCompanyItem>>(listOf())
+    val favList = MutableStateFlow<UIState<List<FavCompanyItem>>>(UIState.Idle)
 
 
     fun getAllFavFeeds() {
         viewModelScope.launch {
+            favList.emit(UIState.Loading)
             withContext(Dispatchers.IO) {
                 val getAllFormattedFavs = mainRepository.getAllFavFeeds("user1")
                     .map { feedItem -> feedItem.toFavCompanyItem() }
-                favList.emit(getAllFormattedFavs)
+                favList.emit(UIState.Success(getAllFormattedFavs))
             }
         }
     }
@@ -37,4 +38,10 @@ class FavViewModel @Inject constructor(private val mainRepository: MainRepositor
     }
 }
 
+sealed class UIState<out T> {
+    object Idle : UIState<Nothing>()
+    object Loading : UIState<Nothing>()
+    data class Success<T>(val data: T) : UIState<T>()
+    data class Error(val message: String) : UIState<Nothing>()
+}
 

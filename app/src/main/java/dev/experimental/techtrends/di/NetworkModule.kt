@@ -1,12 +1,12 @@
 package dev.experimental.techtrends.di
 
-import dev.experimental.techtrends.BuildConfig
-import dev.experimental.techtrends.api.ApiService
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.experimental.techtrends.BuildConfig
+import dev.experimental.techtrends.api.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -36,9 +36,14 @@ object NetworkModule {
                 .readTimeout(20, TimeUnit.SECONDS).writeTimeout(25, TimeUnit.SECONDS)
 
         }.build()
-        return Retrofit.Builder().baseUrl(BASE_URL).client(client)
-            .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(ApiService::class.java)
+
+        return try {
+            Retrofit.Builder().baseUrl(BASE_URL).client(client)
+                .addConverterFactory(GsonConverterFactory.create()).build()
+                .create(ApiService::class.java)
+        } catch (e: Exception) {
+            throw RuntimeException("Failed to create Retrofit instance: ${e.message}", e)
+        }
     }
 
     val BASE_URL = BuildConfig.baseUrl
