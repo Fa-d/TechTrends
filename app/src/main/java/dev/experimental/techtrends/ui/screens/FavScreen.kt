@@ -27,8 +27,8 @@ import dev.experimental.techtrends.ui.components.FavSourcesItem
 import dev.experimental.techtrends.ui.components.appBar
 import dev.experimental.techtrends.ui.theme.tabTypography
 import dev.experimental.techtrends.ui.viewmodels.FavViewModel
-import dev.experimental.techtrends.ui.viewmodels.UIState
 import dev.experimental.techtrends.utils.CenteredProgressbar
+import dev.experimental.techtrends.utils.UIState
 
 
 @Composable

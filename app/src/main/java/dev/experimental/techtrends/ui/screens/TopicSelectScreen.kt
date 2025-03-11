@@ -23,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableFloatStateOf
@@ -47,44 +48,95 @@ import dev.experimental.techtrends.models.CategoryModel
 import dev.experimental.techtrends.nav.NavScreens.NEWSFEED_SCREEN
 import dev.experimental.techtrends.ui.components.appBar
 import dev.experimental.techtrends.ui.viewmodels.ChooseTopicViewModel
+import dev.experimental.techtrends.utils.CenteredError
 import dev.experimental.techtrends.utils.CenteredProgressbar
 import dev.experimental.techtrends.utils.LocalNavController
+import dev.experimental.techtrends.utils.UIState
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TopicSelectScreen() {
     val viewModel = hiltViewModel<ChooseTopicViewModel>()
     val typedText = remember { mutableStateOf("") }
-    viewModel.getAllCategories()
     val categoryState = viewModel.allCategoriesList.collectAsState()
-    val categoryCount = categoryState.value.count { it.selectedByUser == "user1" }
+    val categoryCount = remember { mutableStateOf(0) }
+    val categoryList = remember { mutableStateOf(listOf<CategoryModel>()) }
+    val showPB = remember { mutableStateOf(false) }
+    val showError = remember { mutableStateOf(false) }
+    val errorMsg = remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        typedText.value = appBar().value
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = "What are you interested in ?",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = if (categoryCount < 5) "Choose up to ${5 - categoryCount} to get started"
-            else "You can now proceed to next page.",
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f, false)
-                .verticalScroll(rememberScrollState())
-        ) {
-            StaggeredGridSelectableList(viewModel, typedText.value)
+
+    LaunchedEffect(Unit) {
+        viewModel.getAllCategories()
+    }
+
+    LaunchedEffect(categoryState.value) {
+        when (categoryState.value) {
+            is UIState.Error -> {
+                showPB.value = false
+                showError.value = true
+                errorMsg.value = (categoryState.value as UIState.Error).message
+            }
+
+            is UIState.Loading -> {
+                showPB.value = true
+                showError.value = false
+            }
+
+            is UIState.Success -> {
+                showPB.value = false
+                showError.value = false
+                categoryList.value = (categoryState.value as UIState.Success).data
+                categoryCount.value = categoryList.value.count { it.selectedByUser == "user1" }
+            }
+
+            UIState.Idle -> {
+                showPB.value = true
+                showError.value = false
+            }
         }
-        NextButton(categoryCount, viewModel)
+    }
+
+    Box() {
+        Column(
+            modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            typedText.value = appBar().value
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = "What are you interested in ?",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = if (categoryCount.value < 5) "Choose up to ${5 - categoryCount.value} to get started"
+                else "You can now proceed to next page.",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f, false)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                // StaggeredGridSelectableList(viewModel, typedText.value)
+                FlowRow(
+                    Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    for (item in categoryList.value) {
+                        StaggeredGridItem(item, viewModel)
+                    }
+                }
+            }
+            NextButton(categoryCount.value, viewModel)
+        }
+        if (showPB.value) CenteredProgressbar()
+        if (showError.value) {
+            CenteredError(errorMsg.value)
+        }
     }
 }
 
@@ -141,29 +193,6 @@ fun NextButton(categoryCount: Int, viewModel: ChooseTopicViewModel) {
 }
 
 
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun StaggeredGridSelectableList(viewModel: ChooseTopicViewModel, searchedItem: String) {
-
-    val items: List<CategoryModel> = if (searchedItem.isNotEmpty()) {
-        viewModel.allCategoriesList.collectAsState().value.filter {
-            it.name!!.contains(
-                searchedItem,
-                ignoreCase = true
-            )
-        }
-    } else {
-        viewModel.allCategoriesList.collectAsState().value
-    }
-    if (items.isEmpty()) CenteredProgressbar() else FlowRow(
-        Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround
-    ) {
-        for (item in items) {
-            StaggeredGridItem(item, viewModel)
-        }
-    }
-}
-
 @Composable
 private fun StaggeredGridItem(item: CategoryModel, viewModel: ChooseTopicViewModel) {
     val isSelected = remember { mutableStateOf(false) }
@@ -184,7 +213,6 @@ private fun StaggeredGridItem(item: CategoryModel, viewModel: ChooseTopicViewMod
     }
 }
 
-//@Preview(showBackground = true)
 @Composable
 fun SyncDataDialog(workProgress: MutableState<Float>) {
     Dialog(
@@ -214,7 +242,7 @@ fun SyncDataDialog(workProgress: MutableState<Float>) {
                             .fillMaxWidth()
                             .padding(vertical = 10.dp),
 
-                    )
+                        )
                 }
             }
         },

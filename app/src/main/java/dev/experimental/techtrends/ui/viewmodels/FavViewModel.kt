@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.experimental.techtrends.core.MainRepository
 import dev.experimental.techtrends.models.custom.FavCompanyItem
+import dev.experimental.techtrends.utils.UIState
 import dev.experimental.techtrends.utils.toFavCompanyItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,12 +37,5 @@ class FavViewModel @Inject constructor(private val mainRepository: MainRepositor
             }
         }
     }
-}
-
-sealed class UIState<out T> {
-    object Idle : UIState<Nothing>()
-    object Loading : UIState<Nothing>()
-    data class Success<T>(val data: T) : UIState<T>()
-    data class Error(val message: String) : UIState<Nothing>()
 }
 

@@ -20,6 +20,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntSize
 
@@ -29,6 +30,20 @@ fun CenteredProgressbar() {
         modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun CenteredError(errorMsg: String) {
+    Box(
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+    ) {
+        Text(
+            errorMsg,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.error,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -76,7 +91,8 @@ fun ExpandableText(
         )
         if (!expanded) {
             val density = LocalDensity.current
-            Text(style = MaterialTheme.typography.titleMedium,
+            Text(
+                style = MaterialTheme.typography.titleMedium,
                 text = "... See more",
                 onTextLayout = { seeMoreSizeState.value = it.size },
                 modifier = Modifier

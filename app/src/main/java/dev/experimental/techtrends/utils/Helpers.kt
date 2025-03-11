@@ -80,3 +80,20 @@ fun List<FeedItem>.toSavedItemList(): List<SavedItem> {
         )
     }
 }
+
+suspend fun <T> safeApiCall(apiCall: suspend () -> T): Result<T> {
+    return try {
+        val response = apiCall()
+        Result.success(response)
+    } catch (e: Exception) {
+        Result.failure(Exception("Network Error: ${e.message}"))
+    }
+}
+
+
+sealed class UIState<out T> {
+    object Idle : UIState<Nothing>()
+    object Loading : UIState<Nothing>()
+    data class Success<T>(val data: T) : UIState<T>()
+    data class Error(val message: String) : UIState<Nothing>()
+}
