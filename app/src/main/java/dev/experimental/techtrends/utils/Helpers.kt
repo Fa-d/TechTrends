@@ -1,6 +1,7 @@
 package dev.experimental.techtrends.utils
 
 import android.graphics.Typeface
+import android.text.Html
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
@@ -18,6 +19,9 @@ import androidx.navigation.NavController
 import dev.experimental.techtrends.models.FeedItem
 import dev.experimental.techtrends.models.custom.FavCompanyItem
 import dev.experimental.techtrends.ui.viewmodels.SavedItem
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 
 fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
@@ -97,3 +101,16 @@ sealed class UIState<out T> {
     data class Success<T>(val data: T) : UIState<T>()
     data class Error(val message: String) : UIState<Nothing>()
 }
+
+fun String?.decodeHTML(): String? =
+    this?.run { Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY).toString() }
+
+fun getFormattedTime(timestamp: String): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+    val date = dateFormat.parse(timestamp)
+    val outputFormat = SimpleDateFormat("yyyy/MM/dd hh:mm:ss", Locale.getDefault())
+    outputFormat.timeZone = TimeZone.getDefault()
+    return outputFormat.format(date)
+
+}
+

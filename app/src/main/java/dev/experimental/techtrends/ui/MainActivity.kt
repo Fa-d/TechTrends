@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -38,16 +37,16 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController: NavHostController = rememberNavController()
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentDestination = navBackStackEntry?.destination?.route
+            val shouldDisplayBottomBar = when (currentDestination) {
+                NEWSFEED_SCREEN, FAV_SCREEN, SAVED_SCREEN, PROFILE_SCREEN -> true
+                else -> false
+            }
             CompositionLocalProvider(LocalNavController provides navController) {
                 TTTheme {
                     Scaffold(
                         bottomBar = {
-                            val navBackStackEntry by navController.currentBackStackEntryAsState()
-                            val currentDestination = navBackStackEntry?.destination?.route
-                            val shouldDisplayBottomBar = when (currentDestination) {
-                                NEWSFEED_SCREEN, FAV_SCREEN, SAVED_SCREEN, PROFILE_SCREEN -> true
-                                else -> false
-                            }
                             if (shouldDisplayBottomBar) {
                                 BottomNavigationBar(navController)
                             }
