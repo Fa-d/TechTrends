@@ -17,6 +17,9 @@ interface FeedDao {
     @Query("SELECT * FROM feed_table")
     suspend fun getAllFeedItem(): List<FeedItem>
 
+    @Query("SELECT * FROM feed_table WHERE id = :id")
+    suspend fun getIndividualFeedById(id: String): FeedItem?
+
     @Query("UPDATE feed_table SET isFav = :userName WHERE id = :id")
     suspend fun setCompanyFav(id: Int, userName: String = "user1")
 

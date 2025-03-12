@@ -35,10 +35,12 @@ import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import dev.experimental.techtrends.R
 import dev.experimental.techtrends.models.FeedItem
+import dev.experimental.techtrends.nav.NavScreens.FULL_ARTICLE_SCREEN
 import dev.experimental.techtrends.ui.screens.NewsBottomSheet
 import dev.experimental.techtrends.ui.theme.FeedContentTypography
 import dev.experimental.techtrends.ui.theme.HomeTypography
 import dev.experimental.techtrends.ui.viewmodels.NewsFeedViewModel
+import dev.experimental.techtrends.utils.LocalNavController
 import dev.experimental.techtrends.utils.getHtmlFormattedString
 import kotlinx.coroutines.launch
 import java.time.Instant
@@ -63,8 +65,10 @@ fun FeedContentItem(
     val coroutineScope = rememberCoroutineScope()
     val clickState = remember { mutableStateOf(false) }
     val viewModel = hiltViewModel<NewsFeedViewModel>()
-
-    Column {
+    val navController = LocalNavController.current
+    Column(modifier = Modifier.clickable() {
+        navController.navigate(FULL_ARTICLE_SCREEN + "/${feedItem.id}")
+    }) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.width(16.dp))
             AsyncImage(

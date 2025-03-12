@@ -6,11 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import dev.experimental.techtrends.nav.NavScreens.FAV_SCREEN
+import dev.experimental.techtrends.nav.NavScreens.FULL_ARTICLE_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.NEWSFEED_SCREEN
-import dev.experimental.techtrends.nav.NavScreens.NEWS_DETAILS_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.PROFILE_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.SAVED_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.SPLASH_SCREEN
@@ -18,6 +20,7 @@ import dev.experimental.techtrends.nav.NavScreens.TOPIC_RESELECT_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.TOPIC_SELECT_SCREEN
 import dev.experimental.techtrends.nav.NavScreens.WELCOME_SCREEN
 import dev.experimental.techtrends.ui.screens.FavScreen
+import dev.experimental.techtrends.ui.screens.FullArticleScreen
 import dev.experimental.techtrends.ui.screens.NewsFeedScreen
 import dev.experimental.techtrends.ui.screens.ProfileScreen
 import dev.experimental.techtrends.ui.screens.SavedScreen
@@ -27,6 +30,17 @@ import dev.experimental.techtrends.ui.screens.WelcomeScreen
 import dev.experimental.techtrends.ui.viewmodels.LandingViewmodel
 import dev.experimental.techtrends.utils.LocalNavController
 
+object NavScreens {
+    const val SPLASH_SCREEN = "splash"
+    const val WELCOME_SCREEN = "welcome"
+    const val TOPIC_SELECT_SCREEN = "topic_select"
+    const val TOPIC_RESELECT_SCREEN = "topic_reselect"
+    const val NEWSFEED_SCREEN = "newsfeed"
+    const val FAV_SCREEN = "fav"
+    const val SAVED_SCREEN = "saved"
+    const val PROFILE_SCREEN = "profile"
+    const val FULL_ARTICLE_SCREEN = "full_article"
+}
 
 @Composable
 fun RMNavGraph(
@@ -55,7 +69,7 @@ fun RMNavGraph(
         }
         composable(TOPIC_SELECT_SCREEN) {
             if (minimumTopic.value) {
-                currentNav.navigate(FAV_SCREEN) { launchSingleTop = true }
+                currentNav.navigate(NEWSFEED_SCREEN) { launchSingleTop = true }
             } else {
                 TopicSelectScreen()
                 BackHandler {
@@ -73,9 +87,7 @@ fun RMNavGraph(
                 (currentNav.context as ComponentActivity).finish()
             }
         }
-        composable(NEWS_DETAILS_SCREEN) {
 
-        }
         composable(PROFILE_SCREEN) {
             ProfileScreen()
         }
@@ -84,6 +96,13 @@ fun RMNavGraph(
         }
         composable(SAVED_SCREEN) {
             SavedScreen()
+        }
+        composable(
+            "$FULL_ARTICLE_SCREEN/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) {
+            val tradeNo = it.arguments?.getString("id") ?: "0"
+            FullArticleScreen(tradeNo)
         }
     }
 }
