@@ -83,6 +83,7 @@ This document outlines the main features of the TechTrends application, based on
    - *Key Components:* `db/MainDatabase.kt`, `db/dao/CategoryDao.kt`, `db/dao/FeedDao.kt`, `pref/TtPreferencesSerializer.kt`, `di/DatabaseModule.kt`, `di/DataStoreModule.kt`
 
 ### Feature Diagram
+
 ```mermaid
 graph TD
     subgraph "User Facing Features"
@@ -119,3 +120,4 @@ graph TD
     E -.-> BG_SYNC %% For syncing favorites
     F -.-> LOCAL_DB
 ```
+
