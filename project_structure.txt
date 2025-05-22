@@ -1,0 +1,17 @@
+app/
+├── .gitignore
+├── build.gradle.kts
+├── key/
+│   └── testDebugKey.jks
+├── proguard-rules.pro
+├── proguard_other/
+│   ├── gson_rules.pro
+│   ├── okhttp-rules.pro
+│   └── retrofit_rules.pro
+└── src/
+    └── main/
+        ├── AndroidManifest.xml
+        ├── ic_launcher-playstore.png
+        ├── java/...    [omitted 69 descendants]
+        ├── proto/...    [omitted 1 descendants]
+        └── res/...    [omitted 52 descendants]
