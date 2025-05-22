@@ -115,9 +115,11 @@ graph TD
     C -.-> BG_SYNC
     C -.-> LOCAL_DB
     B -.-> LOCAL_DB
-    D -.-> LOCAL_DB %% For caching viewed articles
+    %% For caching viewed articles
+    D -.-> LOCAL_DB 
     E -.-> LOCAL_DB
-    E -.-> BG_SYNC %% For syncing favorites
+    %% For syncing favorites
+    E -.-> BG_SYNC 
     F -.-> LOCAL_DB
 ```
 
