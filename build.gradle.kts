@@ -8,6 +8,6 @@ plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.compose.compiler) apply false
 
-    id("com.autonomousapps.dependency-analysis") version "2.13.1"
+    id("com.autonomousapps.dependency-analysis") version "2.19.0"
 
 }
