@@ -1,16 +1,18 @@
-name: Android CI/CD
+name: Dependabot Auto Build & Merge
 
 on:
-  push:
-    branches:
-      - main1
   pull_request:
     branches:
-      - main1
+      - main
+    types: [opened, synchronize, reopened]
 
 jobs:
-  build:
+  dependabot-build-and-merge:
+    if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -42,8 +44,12 @@ jobs:
           echo "appVersionName=${{ secrets.APP_VERSION_NAME }}" >> local.properties
           ./gradlew assembleDebug --no-daemon
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      # Optional: run tests as well
+      - name: Run Tests
+        run: ./gradlew test --no-daemon
+
+      - name: Enable automerge for PR
+        uses: peter-evans/enable-pull-request-automerge@v4
         with:
-          name: techtrends-apk
-          path: app/build/outputs/apk/debug/TechTrends-debug-0.0.1.apk
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
