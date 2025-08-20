@@ -1,5 +1,4 @@
 name: Dependabot Auto Build & Merge
-
 on:
   pull_request:
     branches:
@@ -13,17 +12,22 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-
+      # Required for auto-merge
+      actions: write
+      
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
-
+        uses: actions/checkout@v4
+        with:
+          # Fetch the PR branch
+          ref: ${{ github.event.pull_request.head.ref }}
+          
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
-
+          
       - name: Cache Gradle files
         uses: actions/cache@v4
         with:
@@ -33,23 +37,25 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             gradle-${{ runner.os }}
-
+            
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-
+        
       - name: Build debug APK
         run: |
           echo "baseUrl=${{ secrets.BASE_URL }}" > local.properties
           echo "appVersionCode=${{ secrets.APP_VERSION_CODE }}" >> local.properties
           echo "appVersionName=${{ secrets.APP_VERSION_NAME }}" >> local.properties
           ./gradlew assembleDebug --no-daemon
-
-      # Optional: run tests as well
+          
       - name: Run Tests
         run: ./gradlew test --no-daemon
-
-      - name: Enable automerge for PR
-        uses: peter-evans/enable-pull-request-automerge@v4
-        with:
-          pull-request-number: ${{ github.event.pull_request.number }}
-          merge-method: squash
+        
+      # Option 1: Using GitHub CLI (Recommended)
+      - name: Auto-merge Dependabot PR
+        if: success()
+        run: |
+          gh pr merge --auto --squash "${{ github.event.pull_request.number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
